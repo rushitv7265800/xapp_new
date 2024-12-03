@@ -1,24 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './css/index.css';
+import './css/main.css';
+import './css/responsive.css';
+import './css/shorts.css';
+import LogoPage from './components/Pages/authPage/LogoPage';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import SignIn from './components/Pages/authPage/SignIn';
+import AuthRouter from './components/Pages/authPage/AuthRouter';
+import SignUp from './components/Pages/authPage/singUp';
+import PrivateRouter from './components/Pages/authPage/PrivateRouter';
+import UserPage from './components/Pages/UserPage';
 
 function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LogoPage />} />
+          <Route path="/user/*" element={<PrivateRouter element={<UserPage />} />} />
+          <Route path="/signIn" element={<AuthRouter element={<SignIn />} />} />
+          <Route path="/signUp" element={<AuthRouter element={<SignUp />} />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
