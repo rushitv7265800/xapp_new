@@ -7,9 +7,9 @@ import Image from "../../utils/customComponent/Image";
 // import Mute from "../../assets/FrontpageIcons/mute.svg";
 // import Star from "../../assets/FrontpageIcons/Star.svg";
 import { ReactComponent as VerticalDots } from "../../../assets/FrontpageIcons/VerticalDots.svg";
-import Ads1 from "../../../assets/adsVideo/1ads.mp4";
-import Ads2 from "../../../assets/adsVideo/ads2.mp4";
-import Ads3 from "../../../assets/adsVideo/ads3.mp4";
+// import Ads1 from "../../../assets/adsVideo/1ads.mp4";
+// import Ads2 from "../../../assets/adsVideo/ads2.mp4";
+// import Ads3 from "../../../assets/adsVideo/ads3.mp4";
 import Ads2Img from "../../../assets/adsVideo/ads2.jpg";
 import Ads3Img from "../../../assets/adsVideo/ads3.jpg";
 import Ads1Img from "../../../assets/adsVideo/ads1.jpg";
@@ -22,9 +22,9 @@ export default function AddComponent() {
   const [matches, setMatches] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isMuted, setIsMuted] = useState(true);
-  const videoLink = Ads1;
-  const videoLink2 = Ads2;
-  const videoLink3 = Ads3;
+  const videoLink = 'Ads1';
+  const videoLink2 = 'Ads2';
+  const videoLink3 = 'Ads3';
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

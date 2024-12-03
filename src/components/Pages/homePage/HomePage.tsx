@@ -12,10 +12,13 @@ import { ReactComponent as Compass } from "../../../assets/FrontpageIcons/Compas
 import { getAllCategory } from '../../../redux/slice/categorySlice';
 import Drawer from '../../FrontPageComponents/Drawer';
 import Stories from './Stories';
-import AddComponent from './AddComponent';
+import VideoComponent from './VideoComponent';
+import Header from '../../utils/customComponent/Header';
+import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate=useNavigate()
 
   const CategoryBar = () => {
     const { category } = useSelector((state: RootState) => state.category);
@@ -81,7 +84,11 @@ export default function HomePage() {
     }, [shorts])
 
     const handleShorts = (short: any) => {
+      console.log('Short clicked:', short);
+      localStorage.setItem("selectShort", JSON.stringify(short))
+      navigate("/user/shorts")
     }
+
     return (
       <Grid className="p-3 pb-0">
         <Block className="text-white text-lg xl:my-8 lg:my-6 md:my-4 my-2 inline-flex justify-start items-start">
@@ -129,14 +136,18 @@ export default function HomePage() {
       <div className="h-full w-full font-roboto items-start justify-center overflow-hidden bg-black">
         <Grid className={"mr-2 z-50 fixed w-[100%]"}>
           {/* <Header /> */}
+          <Header />
         </Grid>
         <h6>HomePage</h6>
         <CategoryBar />
         <div style={{ backgroundColor: "#2a2a2a" }}>
           <Stories />
-          <AddComponent />
+          {/* <AddComponent /> */}
         </div>
         <Shorts />
+        <Grid className="flex overflow-x-[250px]">
+          <VideoComponent pb={4} />
+        </Grid>
       </div>
     </div>
   )

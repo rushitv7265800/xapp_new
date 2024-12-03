@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Routes, useLocation, useMatch } from "react-router-dom";
 import HomePage from './homePage/HomePage';
-import BottomNavigator from "../utils/BottomNavigator/index";
 import { ReactComponent as HomeSvg } from "../../assets/BottomNavigatorIcons/Home.svg"
 import { ReactComponent as ShortsSvg } from "../../assets/BottomNavigatorIcons/ShortsLogo.svg";
 import { ReactComponent as AddVideoLogo } from "../../assets/BottomNavigatorIcons/AddVideo.svg"
@@ -9,6 +8,9 @@ import { ReactComponent as SubscriptionLogo } from "../../assets/BottomNavigator
 import { ReactComponent as AccountSvg } from "../../assets/BottomNavigatorIcons/Account.svg";
 import Grid from '../utils/customComponent/Grid';
 import Block from '../utils/customComponent/Block';
+import ShortCom from './shortCom/ShortCom';
+import VideoComPlay from './videoCom/VideoComPlay';
+import VideoCom from './videoCom/VideoCom';
 
 
 export default function UserPage() {
@@ -25,7 +27,7 @@ export default function UserPage() {
         {
             name: "Home", icon: HomeSvg, show: true, router: <HomePage />
         },
-        { name: "Shorts", icon: ShortsSvg, show: false, router: "" },
+        { name: "Shorts", icon: ShortsSvg, show: false, router: <ShortCom /> },
         { name: "Add Video", icon: AddVideoLogo, show: true, router: "" },
         { name: "Subscription", icon: SubscriptionLogo, show: true, router: "" },
         { name: getDataLocal?.userImg ? getDataLocal?.userName : "You", type: "userImg", icon: AccountSvg, show: true, router: "" }
@@ -46,6 +48,9 @@ export default function UserPage() {
                     {/* <ShowScreen /> */}
                     <Routes>
                         <Route path={`home`} element={<HomePage />} />
+                        <Route path={`shorts`} element={<ShortCom />} />
+                        <Route path={`Videos`} element={<VideoCom pb={0} />} />
+                        <Route path={`playVideo`} element={<VideoComPlay />} />
                     </Routes>
                     {showBottomBar && BottomScreensName[0].show && (
                         <Block className="bottom-navigator fixed bottom-0 left-0 z-50 w-full bg-white transition-transform transform duration-300 ease-in-out">
