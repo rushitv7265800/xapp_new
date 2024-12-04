@@ -461,7 +461,7 @@ export default function UserAccountPage() {
                     </Block>
                     <Block className={"gap-7 showAccBtn mt-4"}>
                         <HistoryIcon />
-                        <Grid className={"text-white text-[16px]"}>History</Grid>
+                        <Grid className={"text-white text-[16px]" }onClick={() => navigate("/user/history")}>History</Grid>
                     </Block>
                     <Block className={"gap-7 showAccBtn mt-4"}>
                         <YourVideos />

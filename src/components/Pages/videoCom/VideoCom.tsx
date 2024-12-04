@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../redux/store";
 import { baseURL, userData_ } from "../../utils/config";
 import { getAllVideos } from "../../../redux/slice/videoSlice";
+import History from "../userProfile/History";
 
 interface VideoComProps {
     pb: number;
@@ -128,6 +129,7 @@ const VideoCom: React.FC<VideoComProps> = (props: any) => {
                         </Block>
                     </Grid >
                 ))}
+
             </div >
             {videoSpecification && (
                 <Video_Specification
@@ -135,6 +137,7 @@ const VideoCom: React.FC<VideoComProps> = (props: any) => {
                 />
             )}
         </Grid >
+        
     );
 };
 

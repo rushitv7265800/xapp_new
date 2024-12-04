@@ -13,6 +13,7 @@ import VideoComPlay from './videoCom/VideoComPlay';
 import VideoCom from './videoCom/VideoCom';
 import UserAccountPage from './userProfile/UserAccountPage';
 import UserProfile from './userProfile/UserProfile';
+// import History from './userProfile/History';
 
 
 export default function UserPage() {
@@ -57,6 +58,11 @@ export default function UserPage() {
                         <Route path={`playVideo`} element={<VideoComPlay />} />
                         <Route path={`userPage`} element={<UserAccountPage />} />
                         <Route path={`userProfile`} element={<UserProfile />} />
+                        {/* <Route path={`history`} element={<History />} /> */}
+
+              
+
+
                     </Routes>
                     {showBottomBar && BottomScreensName[0].show && (
                         <Block className="bottom-navigator fixed bottom-0 left-0 z-50 w-full bg-white transition-transform transform duration-300 ease-in-out">

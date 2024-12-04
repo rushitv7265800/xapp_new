@@ -815,7 +815,7 @@ const ShortCom = () => {
                                 <Block className=" justify-between p-4">
                                     <Grid className="gap-5 p-2 z-10 self-end">
                                         <Block>
-                                            <div style={{ color: "white", fontSize: "16px", maxWidth: "50%" }}>
+                                            <div className="shorts-text responsive-text text-white text-[16px] max-w-[50%]">
                                                 <span style={{ textTransform: "capitalize" }}>{video?.shortTitle + " " + "|" + " " + video?.shortDescription + " " + "|"}</span>
                                                 {
                                                     video?.hashTag?.map((item: any) => {
@@ -826,7 +826,7 @@ const ShortCom = () => {
                                                 }
                                             </div>
                                         </Block>
-                                        <Block className="gap-4 w-full">
+                                        <Block className="shorts-icons gap-4 w-full">
                                             <Image src={video?.userData?.userImg ? baseURL + video?.userData?.userImg : VideoCreator} style={{ width: "36px", height: "36px" }} classname=" rounded-full object-top object-cover border-2 border-white" />
                                             <Grid className="text-white text-[18px] font-semibold">{video?.userData?.userName}</Grid>
                                             <Grid onClick={() => handleFollow(video)} style={{ padding: "3px 20px", width: "78px", fontSize: "14px" }} className={`text-white cursor-pointer px-4 flex items-center py-1 w-[100px] bg-[#8000FF] ${animateFollow ? "animate-clicked" : ""}  rounded-md text-[18px] font-semibold`}> {getFollowUserData === true ? "Followed" : "Follow"}</Grid>

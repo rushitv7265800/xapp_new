@@ -23,7 +23,6 @@
     margin-top: 44vh !important;
   }
 
-
   .dialogBoxBody span {
     font-size: 11px !important;
   }
@@ -66,14 +65,15 @@
     margin-top: 40vh !important;
   }
 
-
   .dialogBoxBody span {
     font-size: 11px !important;
   }
 
-  .storyViewModel {}
+  .storyViewModel {
+  }
 
-  .storyViewModel .topButtonShow {}
+  .storyViewModel .topButtonShow {
+  }
 
   .storyViewModel .topButtonShow .showUserImgBox {
     padding: 0px 8px;
@@ -90,7 +90,8 @@
     margin-left: -1px;
   }
 
-  .storyViewModel .slider-container .prev {}
+  .storyViewModel .slider-container .prev {
+  }
 
   .storyViewModel .slider-container .prev img {
     width: 28px !important;
@@ -99,16 +100,15 @@
   .storyViewModel .slider-container .next img {
     width: 28px !important;
   }
-  .storyViewModel .bottomHearBox{
-    bottom: 28px !important; 
+  .storyViewModel .bottomHearBox {
+    bottom: 28px !important;
   }
-  .storyViewModel .bottomHearBox button{
+  .storyViewModel .bottomHearBox button {
     padding: 2px !important;
   }
-  .storyViewModel .bottomHearBox button img{
+  .storyViewModel .bottomHearBox button img {
     width: 35px !important;
     height: 35px !important;
-
   }
 }
 
@@ -351,7 +351,6 @@
     margin-top: 30px;
   }
 
-
   .no-padding {
     padding: 0 !important;
   }
@@ -361,7 +360,6 @@
   width: 100%;
   margin: 0 auto;
 }
-
 
 @media (max-width: 768px) {
   .dialogBoxBody {
@@ -461,5 +459,53 @@
 
   .copy-link-container img {
     width: 18px;
+  }
+}
+
+@media (max-width: 425px) {
+  .Shorts {
+    width: 40rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .Shorts {
+    width: 53rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .Shorts {
+    width: 45rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .responsive-text {
+    font-size: 14px;
+  }
+  .responsive-hashtag {
+    font-size: 14px;
+  }
+  .responsive-username {
+    font-size: 16px;
+  }
+  .responsive-caption {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+}
+
+
+@media (max-width: 320px) {
+  .shorts-icons {
+    gap: 4px;
+  }
+}
+
+
+@media (max-width: 320px) {
+  .shorts-text{
+    width: 100%;
   }
 }
