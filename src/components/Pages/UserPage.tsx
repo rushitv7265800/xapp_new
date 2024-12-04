@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Route, Routes, useLocation, useMatch } from "react-router-dom";
+import { Route, Routes, useLocation, useMatch, useNavigate } from "react-router-dom";
 import HomePage from './homePage/HomePage';
-import { ReactComponent as HomeSvg } from "../../assets/BottomNavigatorIcons/Home.svg"
-import { ReactComponent as ShortsSvg } from "../../assets/BottomNavigatorIcons/ShortsLogo.svg";
-import { ReactComponent as AddVideoLogo } from "../../assets/BottomNavigatorIcons/AddVideo.svg"
-import { ReactComponent as SubscriptionLogo } from "../../assets/BottomNavigatorIcons/Subscription.svg";
-import { ReactComponent as AccountSvg } from "../../assets/BottomNavigatorIcons/Account.svg";
+import { ReactComponent as HomeSvg } from "../../assets/BottomNavigatorIcons/s.svg"
+import { ReactComponent as ShortsSvg } from "../../assets/BottomNavigatorIcons/Group 3.svg";
+import { ReactComponent as AddVideoLogo } from "../../assets/BottomNavigatorIcons/Icon.svg"
+import { ReactComponent as SubscriptionLogo } from "../../assets/BottomNavigatorIcons/live-svgrepo-com 2.svg";
+import { ReactComponent as AccountSvg } from "../../assets/BottomNavigatorIcons/User.svg";
 import Grid from '../utils/customComponent/Grid';
 import Block from '../utils/customComponent/Block';
 import ShortCom from './shortCom/ShortCom';
@@ -25,20 +25,22 @@ export default function UserPage() {
     }
     const BottomScreensName = [
         {
-            name: "Home", icon: HomeSvg, show: true, router: <HomePage />
+            name: "Home", icon: HomeSvg, show: true, router: "/user/home"
         },
-        { name: "Shorts", icon: ShortsSvg, show: false, router: <ShortCom /> },
-        { name: "Add Video", icon: AddVideoLogo, show: true, router: "" },
+        { name: "Shorts", icon: ShortsSvg, show: true, router: "/user/shorts" },
+        { name: "Add Video", icon: AddVideoLogo, show: true, router: "/user/Videos" },
         { name: "Subscription", icon: SubscriptionLogo, show: true, router: "" },
         { name: getDataLocal?.userImg ? getDataLocal?.userName : "You", type: "userImg", icon: AccountSvg, show: true, router: "" }
     ]
     const [showBottomBar, setShowBottomBar] = useState(true);
     const location = useLocation()
+    const navigate = useNavigate()
     const [currentScreen, setCurrentScreen] = useState(location?.pathname);
 
-    useEffect(() => {
-        setCurrentScreen(location?.pathname)
-    }, [location])
+    // useEffect(() => {
+    //     setCurrentScreen(location?.pathname)
+    //     console.log(" currentScreen === location.pathname", currentScreen === location.pathname)
+    // }, [location])
 
     return (
         <div>
@@ -54,41 +56,39 @@ export default function UserPage() {
                     </Routes>
                     {showBottomBar && BottomScreensName[0].show && (
                         <Block className="bottom-navigator fixed bottom-0 left-0 z-50 w-full bg-white transition-transform transform duration-300 ease-in-out">
-                            <div className="grid h-auto justify-between items-start pt-1.5 w-full grid-cols-5 font-medium bg-black">
+                            <div className="grid h-auto justify-between items-start py-1.5 w-full grid-cols-5 font-medium bg-black">
                                 {BottomScreensName?.map((item: any, index: any) => {
                                     const IconComponent = item.icon;
                                     const color =
-                                        currentScreen === item.name ? "#ff86ac" : "#0000";
+                                        currentScreen === item.name ? "#8000FF" : "#0000";
                                     return (
                                         <button
                                             type="button"
                                             key={index}
                                             onClick={() => {
                                                 setCurrentScreen(() => item.name);
+                                                navigate(item?.router)
                                             }}
+                                            style={{ height: "100%", justifyContent: "space-evenly" }}
                                             className="inline-flex flex-col items-center justify-center button-nospan"
                                         >
-                                            <Grid className="items-center justify-center font-roboto">
-                                                {/* {
-                          item?.type === "userImg"
-                            ?
-                            // <img src={getDataLocal?.userImg ? baseURL + getDataLocal?.userImg : AccountSvg} style={{ borderRadius: "40px", width: "28px", height: "28px", objectFit: "cover", objectPosition: "top" }} />
-                            <img src={userData_?.userImg ? userData_?.userImg : AccountSvg} onError={(e: any) => e.target.src = AccountSvg} style={{ borderRadius: "40px", width: "28px", height: "28px", objectFit: "cover", objectPosition: "top" }} />
-                            :
-                            <IconComponent fill={color} />
-                        } */}
-                                                <IconComponent fill={color} />
+                                            <Grid className={`items-center justify-center font-roboto ${currentScreen === item.name && "bottomIconNavigatation"} `}>
+                                                <IconComponent fill={'#0000'}/>
                                                 {item.name === currentScreen && (
                                                     <span className="h-[3px]"></span>
                                                 )}
                                             </Grid>
-                                            <Grid
-                                                className={
-                                                    "text-[11px] mt-1 tracking-normal text-white font-thin font-roboto"
-                                                }
-                                            >
-                                                {index == 2 ? "" : item.name}
-                                            </Grid>
+                                            {
+                                                currentScreen === item?.name && (
+                                                    <Grid
+                                                        style={{ background: `${currentScreen === item?.name ? color : ""}`, width: "8px", height: "8px", borderRadius: "50%" }}
+                                                        className={
+                                                            "text-[11px] mt-1 tracking-normal text-white font-thin font-roboto"
+                                                        }
+                                                    >
+                                                    </Grid>
+                                                )
+                                            }
                                         </button>
                                     );
                                 })}

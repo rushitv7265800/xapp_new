@@ -111,7 +111,7 @@ const Stories: React.FC = () => {
         >
           <Block className="text-white text-lg mt-3 mb-0 inline-flex justify-start items-start">
             <img className="mx-2" src={StoryLogo} />
-            <Grid className={"text-[22px] font-extrabold"}>Shorts</Grid>
+            <Grid className={"text-[22px] font-extrabold"}>Story</Grid>
           </Block>
           <div className="grid grid-flow-col auto-cols-max md:gap-4 gap-2 p-2 storyHome xl:mb-6 lg:mb-4 md:mb-3 mb-1 overflow-x-auto no-scrollbar">
             <Grid

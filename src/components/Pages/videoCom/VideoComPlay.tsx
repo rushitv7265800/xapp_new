@@ -152,11 +152,11 @@ const VideoComPlay = () => {
             if (Object?.values(videoOneData)?.length > 0) {
                 setVideoOneDataGet(videoOneData)
             } else {
-                setVideoOneDataGet({})
+                // setVideoOneDataGet(JSON.stringify(""))
             }
         }, 500);
     }, [videoOneData])
-    const checkLikeFilter = videoOneDataGet?.likeData?.filter((item: any) => item?.userId === userData_?._id);
+    const checkLikeFilter = videoOneDataGet && videoOneDataGet?.likeData?.filter((item: any) => item?.userId === userData_?._id);
     const checkLike = checkLikeFilter && checkLikeFilter.length > 0 ? checkLikeFilter[0]?.like : false;
 
 
@@ -175,7 +175,7 @@ const VideoComPlay = () => {
     const handleLike = () => {
         const payload = {
             userId: userData_?._id,
-            videoId: Object?.values(videoOneDataGet)?.length > 0 && videoOneDataGet?._id,
+            videoId: videoOneDataGet && videoOneDataGet?._id,
             like: like
         }
         dispatch(likeVideo(payload))
@@ -206,18 +206,18 @@ const VideoComPlay = () => {
     const { userFollowData } = useSelector((state: any) => state.auth);
     const [followDataGet, setFollowDataGet] = useState<any>()
     const [subscribers, setSubscribers] = useState<any>()
-    const totalLike = videoOneDataGet?.like
+    const totalLike = videoOneDataGet && videoOneDataGet?.like
     useEffect(() => {
     }, [videoOneDataGet])
 
     const specifications = [
-        [Like, totalLike, handleLike, true],
-        [Share, "Share", handleShare, true],
-        [Clip, "Clip", handleClip, false],
-        [Download, "Download", handleDownload, true],
-        [Report, "Report", handleReport, true],
-        [Remix, "Remix", handleRemix, false],
-        [Save, "Save", handleSave, false]
+        [<Like/>, totalLike, handleLike, true],
+        [<Share/>, "Share", handleShare, true],
+        [<Clip/>, "Clip", handleClip, false],
+        [<Download/>, "Download", handleDownload, true],
+        [<Report/>, "Report", handleReport, true],
+        [<Remix/>, "Remix", handleRemix, false],
+        [<Save/>, "Save", handleSave, false]
     ];
 
     useEffect(() => {
@@ -260,7 +260,7 @@ const VideoComPlay = () => {
         const filterUnfollowData = userFollowData?.userData?.followActive
         console.log("userFollowData", filterUnfollowData)
         const payload = {
-            userId: Object?.values(videoOneDataGet)?.length > 0 && videoOneDataGet?.userId,
+            userId: videoOneDataGet && videoOneDataGet?.userId,
             targetUserId: userData_?._id,
         }
         dispatch(createfollowUser(payload))
@@ -281,7 +281,7 @@ const VideoComPlay = () => {
 
     const Video_Specification2 = () => {
 
-        const VideoSpecificationList = [[ArrowList, "Play next in queue"], [Watch, "Save to watch later"], [Playlist, "Save to playlist"], [Download, "Download video"], [Share, "Share"], [NotInterested, "Not interested"], [DoNotRecommanded, "Don't recommend channel"], [Report, "Report"], [ListenMusic, "Listen to youtube music"]]
+        const VideoSpecificationList = [[<ArrowList />, "Play next in queue"], [<Watch />, "Save to watch later"], [<Playlist />, "Save to playlist"], [<Download />, "Download video"], [<Share />, "Share"], [<NotInterested />, "Not interested"], [<DoNotRecommanded />, "Don't recommend channel"], [<Report />, "Report"], [<ListenMusic />, "Listen to youtube music"]]
 
         return (
             <div className="fixed inset-0 flex items-end justify-center z-20">
@@ -293,7 +293,7 @@ const VideoComPlay = () => {
                     {VideoSpecificationList.map((item: any) => (
                         <Block className={"w-full flex gap-x-8 items-start"}>
                             <Grid className={"w-6"}>
-                                <Image src={item[0] as string} />
+                                {item[0] && item[0]}
                             </Grid>
                             <Grid className={"text-[16px] font-normal text-white"}>
                                 {item[1]}
@@ -335,7 +335,7 @@ const VideoComPlay = () => {
         const handleUnSubscribe = () => {
             const filterUnfollowData = userFollowData?.userData?.followActive
             const payload = {
-                userId: Object?.values(videoOneDataGet)?.length > 0 && videoOneDataGet?.userId,
+                userId: videoOneDataGet && videoOneDataGet?.userId,
                 targetUserId: userData_?._id,
                 // follow: filterUnfollowData === true ? false : true
             }
@@ -343,10 +343,10 @@ const VideoComPlay = () => {
             setNotyfy(false)
         }
         const notifyList = [
-            [AllNotify, "All", handleAllNotify],
-            [Notification, "Personalize", handlePersonalize],
-            [BlockNotify, "None", handleBlockNotify],
-            [Unsubscribe, "Unsubscribe", handleUnSubscribe],
+            [<AllNotify/>, "All", handleAllNotify],
+            [<Notification/>, "Personalize", handlePersonalize],
+            [<BlockNotify/>, "None", handleBlockNotify],
+            [<Unsubscribe/>, "Unsubscribe", handleUnSubscribe],
 
         ]
         return (
@@ -360,11 +360,11 @@ const VideoComPlay = () => {
                         Notifications
                         <Cross style={{ width: "25px", cursor: "pointer" }} onClick={() => setNotyfy(false)} />
                     </Block>
-                    {notifyList.map((item: any) => (
+                    {notifyList && notifyList?.map((item: any) => (
                         <Block className={"w-full flex justify-between notificatioShow items-start"} onClick={typeof item[2] === 'function' ? item[2] : undefined}>
                             <Block className={"gap-x-5"}>
                                 <Grid className={"w-6"}>
-                                    <Image src={item[0] as string} />
+                                    {item[0] }
                                 </Grid>
                                 <Grid className={"text-[16px] font-normal text-white"}>
                                     {item[1]}
@@ -501,7 +501,7 @@ const VideoComPlay = () => {
             const payload = {
                 userId: userData_?._id,
                 comment: commentInput.trim(),
-                videoId: Object?.values(videoOneDataGet)?.length > 0 && videoOneDataGet?._id
+                videoId: videoOneDataGet && videoOneDataGet?._id
             }
             dispatch(createCommentVideo(payload))
             setShowCommentBox(false)
@@ -580,7 +580,7 @@ const VideoComPlay = () => {
                             width: "100%"
                         }}>
                             {
-                                Object?.values(videoOneDataGet)?.length > 0 && videoOneDataGet?.commentData?.map((item: any, index: any) => {
+                                videoOneDataGet && videoOneDataGet?.commentData?.map((item: any, index: any) => {
                                     return (
                                         <div style={{
                                             display: "flex",
@@ -661,17 +661,17 @@ const VideoComPlay = () => {
         return (
             <>
                 <div style={{ backgroundColor: "#242424", margin: "8px 13px", padding: "10px", borderRadius: "10px" }}>
-                    <h5>{Object?.values(videoOneDataGet)?.length > 0 && videoOneDataGet?.views + " " + "Views" + " " + dayjs(videoOneDataGet?.createdAt).format('D MMM YYYY')}</h5>
+                    <h5> {videoOneDataGet && videoOneDataGet?.views + " " + "Views" + " " + dayjs(videoOneDataGet?.createdAt).format('D MMM YYYY')}</h5>
                     <span style={{ display: "block", marginTop: "6px", color: "white" }}>Hashtag</span>
                     {
-                        Object?.values(videoOneDataGet)?.length > 0 && videoOneDataGet?.hashTag?.map((item: any) => {
+                        videoOneDataGet && videoOneDataGet?.hashTag?.map((item: any) => {
                             return (
                                 <span style={{ color: "#4242d3", textDecoration: "underline", padding: "0px 6px", cursor: "pointer" }}>{item}</span>
                             )
                         })
                     }
                     <h5 style={{ marginTop: "6px", color: "white" }}>Description</h5>
-                    <p>{Object?.values(videoOneDataGet)?.length > 0 && videoOneDataGet?.videoDescription}</p>
+                    <p> {videoOneDataGet && videoOneDataGet?.videoDescription}</p>
                 </div>
             </>
         )
@@ -773,32 +773,6 @@ const VideoComPlay = () => {
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
 
-    /////
-    let storedComments = []; // Initialize as an empty array
-
-    try {
-        // Fetch comments from localStorage
-        const commentsFromStorage = localStorage.getItem('comments');
-        // console.log('Raw comments from localStorage:', commentsFromStorage); // Log raw data
-
-        // Parse the comments if available
-        if (commentsFromStorage) {
-            // Ensure it is valid JSON before parsing
-            storedComments = JSON.parse(commentsFromStorage);
-            console.log('Parsed comments:', storedComments); // Log parsed data
-        } else {
-            console.warn('No comments found in localStorage.'); // Log if no data
-        }
-    } catch (error) {
-        console.error('Error parsing comments from local storage:', error);
-        storedComments = []; // Fallback to an empty array on error
-    }
-
-    // Check if storedComments is actually an array
-    if (!Array.isArray(storedComments)) {
-        console.error('Expected storedComments to be an array, but got:', storedComments);
-        storedComments = []; // Ensure it's an array
-    }
     const handleCopyClickLink = (textToCopy: any) => {
         navigator.clipboard.writeText(baseURL + textToCopy)
             .then(() => {
@@ -811,7 +785,7 @@ const VideoComPlay = () => {
     //////
 
     const ShareDialog = () => {
-        const getVideoData = Object?.values(videoOneDataGet)?.length > 0 && videoOneDataGet
+        const getVideoData = videoOneDataGet && videoOneDataGet
         return (
             <>
                 <div className="dialog-box-main">
@@ -867,7 +841,7 @@ const VideoComPlay = () => {
                 <Grid className="videoContent  w-full h-54vh] relative">
                     {controls && (
                         <Block className="absolute z-1 w-full justify-between p-4">
-                            <Block onClick={() => navigate(-1)}>
+                            <Block onClick={() => navigate("/user/home")}>
                                 <DownArrow className="w-4" />
                             </Block>
                             <Block className="space-x-5">
@@ -940,7 +914,7 @@ const VideoComPlay = () => {
                                 handleFastForward();
                             }
                         }}
-                        src={videoOneDataGet?.videoFile ? baseURL + videoOneDataGet?.videoFile : ""}
+                        src={videoOneDataGet && videoOneDataGet?.videoFile ? baseURL + videoOneDataGet?.videoFile : ""}
                         className="w-full  bg-cover object-contain videoMainShow"
                         style={{ backgroundColor: "#000000", height: "53vh" }}
                         ref={videoRef}
@@ -959,16 +933,16 @@ const VideoComPlay = () => {
             {/* Title and Description */}
             <Block className={"px-3.5  pt-3 flex"} style={{ justifyContent: "space-between" }}>
                 <Grid className={"text-[19.5px] font-bold leading-snug opacity-[90%] text-white"} style={{ textTransform: "capitalize" }}>
-                    { videoOneDataGet?.videoTitle}
+                    {videoOneDataGet && videoOneDataGet?.videoTitle}
                 </Grid>
 
                 <button onClick={() => setVideDes(!vidDes)} style={{ transform: `${vidDes === true ? "rotate(180deg)" : "unset"}` }}><VectorIcon /></button>
             </Block>
             <Block className={"px-3 pt-2"}>
                 <Grid className={"text-[12.5px] text-white  flex"} style={{ flexDirection: "row", alignItems: "center" }}>
-                    <span className={"opacity-[60%]"}>{ videoOneDataGet?.views} views {DateTime.DateToLocal(new Date(videoOneDataGet?.createdAt))}</span>
+                    <span className={"opacity-[60%]"}>{videoOneDataGet && videoOneDataGet?.views} views {DateTime.DateToLocal(new Date(videoOneDataGet?.createdAt))}</span>
                     {
-                         videoOneDataGet?.hashTag?.map((item: any) => {
+                        videoOneDataGet && videoOneDataGet?.hashTag?.map((item: any) => {
                             return (
                                 <span className={"text-[12.5px] "} style={{ marginLeft: "10px", color: "rgb(37, 99, 235)", fontWeight: "bold" }}>{item}</span>
                             )
@@ -988,7 +962,7 @@ const VideoComPlay = () => {
                 <VideoDescription video={video} />
             } */}
             <Block className="text-xs mt-3 overflow-x-auto scrollbar-none space-x-2 pl-3 py-2 flex items-center">
-                {specifications.map((item, index) => (
+                {specifications && specifications.map((item: any, index: number) => (
                     item[3] === true && (
                         <Block
                             key={index}
@@ -1007,44 +981,38 @@ const VideoComPlay = () => {
                                 style={{ opacity: `${checkLike ? "1" : "0.6"}`, cursor: 'pointer' }}
                             >
                                 {
-                                    like && item[0] === Like ? <Like2 /> : (item[0] as string)
+                                    like && item[0] === Like ? (
+                                        <Like2 />
+                                    ) : (
+                                        item[0] 
+                                    )
                                 }
                             </div>
-                            {/* <img
-                                onClick={like && item[0] === Like ? handleLike : undefined}
-                                className={`w-8 h-8 rounded-full p-1 transition-transform duration-500 ease-in-out ${animate2 && checkLike && item[0] === Like ? 'animate-clicked2' : ''}`}
-                                style={{ opacity: `${checkLike ? "1" : "0.6"}`, cursor: 'pointer' }}
-                                src={like && item[0] === Like ? Like2 : (item[0] as string)}
-                                alt="icon"
-                            /> */}
                             <div className="lg:text-base text-sm ml-3 text-white">
                                 {item[1]}
                             </div>
                         </Block>
                     )
                 ))}
+
             </Block>
 
             <Block className={"flex justify-between pl-1"} style={{ margin: "10px", padding: "6px 4px", borderTop: "0.5px solid #CECECE", borderBottom: "0.5px solid #CECECE" }}>
                 <Block className={"gap-x-3"} >
-                    {/* <img className={"rounded-full w-8 h-8"} src={video.avatar} /> */}
                     <Block className={"flex gap-2"}>
                         <Image
-                            src={ videoOneDataGet?.user ? baseURL + videoOneDataGet?.user?.userImg : baseURL + videoOneDataGet?.userData?.userImg
+                            src={videoOneDataGet && videoOneDataGet?.user ? baseURL + videoOneDataGet?.user?.userImg : baseURL + videoOneDataGet?.userData?.userImg
                             }
                             style={{ borderRadius: "40px", width: "40px", height: "40px", objectFit: "cover", objectPosition: "top" }}
                         />
                         <div style={{ display: "flex", flexDirection: "column" }}>
-                            <Grid className={"text-[14px]"} style={{ color: "#2563eb", fontWeight: "bold" }}>{ videoOneDataGet?.user?.userName}</Grid>
+                            <Grid className={"text-[14px]"} style={{ color: "#2563eb", fontWeight: "bold" }}>{videoOneDataGet && videoOneDataGet?.user?.userName}</Grid>
                             <Grid className={"text-[12.5px] text-[#ffffff] font-normal "}>{followDataGet?.follow ? followDataGet?.follow + " " + "Follower" : (0 + " " + "Follow")}</Grid>
                         </div>
                     </Block>
                 </Block>
                 {subscribers?.userData?.followActive === true ?
                     <Block className={"gap-3 "}>
-                        {/* <Block onClick={handleJoin} className={`px-3.5 py-1 bg-white text-[14.5px] font-bold rounded-3xl text-black ${animate ? 'animate-clicked2' : ''}`} >
-                            {followDataGet?.notification?.notificationActive === true ? "Joined" : "Join"}
-                        </Block> */}
                         <Block className={`px-3.5 py-1 bg-white text-[14.5px] font-bold rounded-3xl text-black }`} >
                             {subscribers?.userData?.followActive === true ? "Unfollow" : "follow"}
                             <Block
@@ -1058,7 +1026,6 @@ const VideoComPlay = () => {
                                     }
                                 </Grid>
                                 <DownArrow style={{ width: "20px" }} />
-                                {/* <Image src={downArrow} style={{ width: "20px" }} /> */}
                             </Block>
                         </Block>
                     </Block>
@@ -1078,7 +1045,7 @@ const VideoComPlay = () => {
                 <Block className={"flex justify-between"}>
                     <Block className={"flex space-x-2"}>
                         <Grid className={"text-[20px] font-normal text-white"}>Comments</Grid>
-                        <Grid className={"text-gray-400 text-[14px] font-normal opacity-[80%]"}>{ videoOneDataGet?.commentCount}</Grid>
+                        <Grid className={"text-gray-400 text-[14px] font-normal opacity-[80%]"}>{videoOneDataGet && videoOneDataGet?.commentCount}</Grid>
                     </Block>
                     <Block>
                         <Image onClick={() => setShowCommentBox(true)} style={{ cursor: "pointer", width: "17px" }} src={CommentButton} />
@@ -1087,9 +1054,9 @@ const VideoComPlay = () => {
                 <Block className={"flex gap-x-2"}>
                     <Grid className="text-[13px] mt-3 opacity-[90%] w-[100%] leading-tight font-light text-white">
 
-                        { videoOneDataGet?.commentData && videoOneDataGet?.commentData.length > 0 ? (
+                        {videoOneDataGet && videoOneDataGet?.commentData && videoOneDataGet?.commentData.length > 0 ? (
                             <div>
-                                { videoOneDataGet?.commentData[0] && videoOneDataGet?.commentData[0] ? (
+                                {videoOneDataGet?.commentData[0] && videoOneDataGet?.commentData[0] ? (
                                     videoOneDataGet?.commentData?.slice(0, 1)?.map((item: any, index: any) => {
                                         return (
                                             <div style={{ display: "flex", alignItems: "center", justifyContent: "spaceBetween", backgroundColor: "#353434", borderRadius: "10px", padding: "13px 12px" }} onClick={() => setShowCommentBox(true)}>
@@ -1112,32 +1079,14 @@ const VideoComPlay = () => {
                         ) : (
                             <span style={{ marginBottom: "10px" }}>No comments available</span> // Fallback when no comments exist
                         )}
-                        {/* /////////// */}
-                        {/* <Grid onClick={handleComment} className={"flex justify-start mr-2 rounded-xl px-3 py-3 w-[100%]"} style={{ backgroundColor: "rgb(96 96 96)" }}>
-                            <Block >
-                                <Grid className={"text-white opacity-[80%] text-[16px]"}>Comments</Grid>
-                            </Block>
-                            <Block>
-                                <Block className={"space-x-1.5 gap-2 py-1 w-[100%] mt-3"}>
-                                    <img className={"rounded-full w-7 h-7"} src={baseURL + videoOneDataGet?.userData?.userImg} onError={(e: any) => e.target.src = VideoCreator}
-                                    />
-                                    <input placeholder={"Add a comment..."} className={"h-[30px] w-full px-2 py-0.5 text-[13px] text-white opacity-[70%] rounded-3xl pl-3 bg-[#494848]"} />
-                                </Block>
-                            </Block>
-                        </Grid> */}
                     </Grid>
                 </Block>
 
             </Grid>
             <CategoryBar />
-            {/* <AddComponent /> */}
-            {/* {/* <VideoComponent pb={0} /> */}
             <Grid className={"mb-20"}>
                 <VideoComponent pb={0} />
             </Grid>
-            {/* {getComment &&
-                <CommentDialog />
-            } */}
             {notify &&
                 <SubscribeNotifyDialog />
             }
@@ -1172,12 +1121,6 @@ const VideoComPlay = () => {
                 videoAssets &&
                 <Video_Specification setVideoSpecification={() => setVideoAssets(false)} />
             }
-            {/* {
-                cast &&
-                <ConnectDevicesDialog setCast={() => setCast(false)} />
-            } */}
-
-
         </Grid>
     );
 };

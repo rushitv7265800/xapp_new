@@ -8,10 +8,12 @@ import { RWebShare } from 'react-web-share';
 import { ReactComponent as PauseVideoIcon } from "../../../assets/VideoPlayIcons/PauseVideoIcon.svg"
 import { ReactComponent as VerticalDots } from "../../../assets/FrontpageIcons/VerticalDots.svg";
 import { ReactComponent as PlayVidIcon } from "../../../assets/VideoPlayIcons/PlayVidIcon.svg"
+import VolumeIcon from "../../../assets/VideoPlayIcons/volume.png"
+import MuteIcon from "../../../assets/VideoPlayIcons/mute.png"
 import GiftIcon from "../../../assets/FrontpageIcons/GiftIcon.png"
 import { ReactComponent as Save2 } from "../../../assets/shorts/Save2.svg"
 import { ReactComponent as CloseIconShow } from "../../../assets/FrontpageIcons/closeIconShow.svg"
-import {ReactComponent as ShareIcon} from "../../../assets/FrontpageIcons/Share.svg"
+import { ReactComponent as ShareIcon } from "../../../assets/FrontpageIcons/Share.svg"
 // import Messanger from "../../../assets/VideoPlayIcons/Messanger.svg"
 // import Bluetooth from "../../../assets/VideoPlayIcons/BlueTooth.svg"
 // import QuickShare from "../../../assets/VideoPlayIcons/QuickShare.svg"
@@ -31,10 +33,10 @@ import { ReactComponent as Like2 } from "../../../assets/FrontpageIcons/LikeFill
 import { ReactComponent as Camera } from "../../../assets/home/Camera.svg"
 import VideoCreator from "../../../assets/FrontpageIcons/VideoCreator.avif";
 // import Gift from "../assets/home/Gift.svg"
-import {ReactComponent as Saved} from "../../../assets/home/SavedLogo.svg"
-import {ReactComponent as Comment} from "../../../assets/shorts/comment.svg";
+import { ReactComponent as Saved } from "../../../assets/home/SavedLogo.svg"
+import { ReactComponent as Comment } from "../../../assets/shorts/comment.svg";
 // import CommentBoxComponent from "../screens/CommentBox"
-import {ReactComponent as Share} from "../../../assets/shorts/share.svg";
+import { ReactComponent as Share } from "../../../assets/shorts/share.svg";
 // import Music from "../assets/shorts/music.svg";
 import "../../../css/shorts.css";
 import { useState, useRef, useEffect } from "react";
@@ -49,6 +51,7 @@ import dayjs from "dayjs";
 import { Success } from "../../utils/toastServices";
 import { getUserFollow } from "../../../redux/slice/authSlice";
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { useNavigate } from "react-router-dom";
 
 // Add the plugin to dayjs
 dayjs.extend(relativeTime);
@@ -65,9 +68,14 @@ const ShortCom = () => {
     const { shorts } = useSelector((state: any) => state.short);
     const [shortsData, setShortsData] = useState<any[] | undefined>(undefined);
     const storedData = localStorage.getItem("selectShort");
-
+    const [mutedGet, setMutedGet] = useState<boolean>(true)
+    const navigate = useNavigate()
 
     // Check if storedData is valid and not an empty string before parsing
+    const handleMuteToggle = () => {
+        setMutedGet((prev) => !prev);
+    };
+
     let getSelectShort = null;
     if (storedData && storedData.trim() !== "") {
         try {
@@ -92,7 +100,7 @@ const ShortCom = () => {
     }, [start, limit])
 
     useEffect(() => {
-        if (!shorts || !getSelectShort) return;
+        if (!shorts) return;
         console.log("shorts", shorts[0])
         // const selectedShort = shorts.find(item => item?._id === getSelectShort?._id);
         // const removeShort = shorts.filter(item => item?._id !== getSelectShort?._id); // Find the item that matches the selected ID
@@ -223,7 +231,8 @@ const ShortCom = () => {
         const payload = {
             userId: video?.userId,
             targetUserId: userData_?._id,
-            shortId: video?._id
+            shortId: video?._id,
+            filterUnfollowData:filterUnfollowData
         }
         dispatch(toggleFollowShort(payload))
         if (follow) {
@@ -343,7 +352,7 @@ const ShortCom = () => {
                                         }}
                                         onClick={() => console.info("share successful!")}
                                     >
-                                        <button style={{ display: "flex", alignItems: "center", border: "1px solid white", padding: "6px", borderRadius: "10px", fontWeight: "bold" }}><ShareIcon style={{ marginRight: "6px" }}/>Share</button>
+                                        <button style={{ display: "flex", alignItems: "center", border: "1px solid white", padding: "6px", borderRadius: "10px", fontWeight: "bold" }}><ShareIcon style={{ marginRight: "6px" }} />Share</button>
                                     </RWebShare>
                                 </div>
                             </div>
@@ -433,46 +442,48 @@ const ShortCom = () => {
     // }, [shortsData]);
 
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    const index = videoRefs.current.indexOf(entry.target as HTMLVideoElement);
-                    if (entry.isIntersecting) {
-                        videoRefs.current[index]?.play();
-                        setPlayPause(prevState => {
-                            const newState = [...prevState];
-                            newState[index] = true;
-                            return newState;
-                        });
-                        setFollowShortId(index)
-                        setShowCommentBox(false)
-                        setShare(false)
-                    } else {
-                        videoRefs.current[index]?.pause();
-                        setPlayPause(prevState => {
-                            const newState = [...prevState];
-                            newState[index] = false;
-                            return newState;
-                        });
-                    }
-                });
-            },
-            { threshold: 0.5 }
-        );
+        if (shortsData && videoRefs?.current) {
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries?.forEach((entry) => {
+                        const index = videoRefs.current.indexOf(entry.target as HTMLVideoElement);
+                        if (entry.isIntersecting) {
+                            videoRefs.current[index]?.play();
+                            setPlayPause(prevState => {
+                                const newState = [...prevState];
+                                newState[index] = true;
+                                return newState;
+                            });
+                            setFollowShortId(index)
+                            setShowCommentBox(false)
+                            setShare(false)
+                        } else {
+                            videoRefs.current[index]?.pause();
+                            setPlayPause(prevState => {
+                                const newState = [...prevState];
+                                newState[index] = false;
+                                return newState;
+                            });
+                        }
+                    });
+                },
+                { threshold: 0.5 }
+            );
 
-        videoRefs.current.forEach(video => {
-            if (video) {
-                observer.observe(video);
-            }
-        });
-
-        return () => {
             videoRefs.current.forEach(video => {
                 if (video) {
-                    observer.unobserve(video);
+                    observer.observe(video);
                 }
             });
-        };
+
+            return () => {
+                videoRefs.current.forEach(video => {
+                    if (video) {
+                        observer.unobserve(video);
+                    }
+                });
+            };
+        }
     }, [shortsData]);
 
 
@@ -527,16 +538,29 @@ const ShortCom = () => {
             dispatch(createCommentShort(payload))
             setShowCommentBox(false)
         }
-        const handleChange = (e: any) => {
-            if (e.target?.value) {
-                setCommentInput(e.target.value);
+        useEffect(() => {
+            if (inputRef.current) {
+                // Always focus the input while maintaining the cursor position
+                const cursorPosition = inputRef.current.selectionStart ?? commentInput.length;
+                inputRef.current.focus();
+                inputRef.current.setSelectionRange(cursorPosition, cursorPosition);
             }
+        }, [commentInput]);
 
+        const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+            const cursorPosition = e.target.selectionStart; // Capture current cursor position
+            const newValue = e.target.value; // New value from textarea
+
+            setCommentInput(newValue); // Update state with new value
+
+            // Restore cursor position after state update
+            setTimeout(() => {
+                if (inputRef.current) {
+                    inputRef.current.setSelectionRange(cursorPosition, cursorPosition);
+                }
+            }, 0);
         };
 
-        useEffect(() => {
-            inputRef.current?.focus();
-        }, [commentInput]);
 
 
         return (
@@ -582,7 +606,7 @@ const ShortCom = () => {
                                 ref={inputRef}
                                 placeholder={"Add a comment..."}
                                 value={commentInput}
-                                // type="text"
+                                typeof="text"
                                 onChange={handleChange}
                                 style={{
                                     // borderRadius: "20px",
@@ -706,9 +730,9 @@ const ShortCom = () => {
     return (
         <div>
 
-            <Grid className="items-center showShortContentBox w-full bg-black-600 h-[90%] relative">
+            <Grid className="items-center showShortContentBox w-full bg-black-600 relative">
                 <InfiniteScroll
-                    dataLength={shorts?.length}
+                    dataLength={shorts && shorts?.length}
                     next={fetchData}
                     hasMore={true}
                     loader={<h4>Loading...</h4>}
@@ -730,14 +754,15 @@ const ShortCom = () => {
                         <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
                     }
                 >
-                    {shortsData?.map((video, index) => {
+                    {shorts?.length > 0 && shortsData?.map((video, index) => {
                         const checkLike = video?.likeData?.filter((item: any) => item?.userId === userData_?._id)
                         const getLikeUserData = checkLike ? checkLike[0]?.like : ""
                         const getFollowUserData = video?.user ? video?.user?.userData?.followActive : false
                         return (
-                            <Grid className="justify-between min-h-[100vh] w-full relative snap-start" key={index}>
+                            <Grid className="justify-between w-full relative snap-start" key={index} style={{ minHeight: "calc(100vh - 24px)" }}>
                                 <Grid className="absolute top-0 w-full h-screen">
                                     <video
+                                        muted={mutedGet}
                                         onClick={() => handlePlayPause(index)}
                                         onEnded={() => handleVideoEnd(index)} // Detect when the video ends
                                         className="h-full w-full object-contain"
@@ -746,6 +771,7 @@ const ShortCom = () => {
                                     >
                                         Your browser does not support the video tag.
                                     </video>
+
                                 </Grid>
                                 {/* {getComment &&
                                 <div className={"relative"}>
@@ -759,14 +785,34 @@ const ShortCom = () => {
                                     </div>
                                 }
                                 <Block className="justify-between z-10 h-full p-4">
-                                    <HeroIcon iconName="ArrowLongLeftIcon" className="h-6 w-6 text-white cursor-pointer" />
+                                    <HeroIcon iconName="ArrowLongLeftIcon" onClick={() => navigate("/user/home")} className="h-6 w-6 text-white cursor-pointer" />
                                     <Block className={"flex items-center gap-5"}>
                                         <Grid className="items-center cursor-pointer">
-                                            <Camera />
+                                            {/* <Camera /> */}
+                                            <Grid onClick={handleMuteToggle} className="items-center z-10 cursor-pointer w-[40px]">
+                                                <Grid className={"w-7"}>
+                                                    {
+                                                        mutedGet ?
+                                                            <img src={MuteIcon} style={{ filter: "invert(100%)", width: "28px", height: "28px" }} />
+                                                            :
+                                                            <img src={VolumeIcon} style={{ filter: "invert(100%)", width: "28px", height: "28px" }} />
+                                                    }
+                                                </Grid>
+                                            </Grid>
                                         </Grid>
                                     </Block>
+                                    {/* <Grid onClick={handleMuteToggle} style={{position:"absolute",top:"13%",right:"2%"}} className="items-center z-10 cursor-pointer w-[40px]">
+                                            <Grid className={"w-7"}>
+                                                {
+                                                    mutedGet ?
+                                                    <img src={MuteIcon} style={{filter:"invert(100%)",width:"28px",height:"28px"}}/>
+                                                    :
+                                                    <img src={VolumeIcon} style={{filter:"invert(100%)",width:"28px",height:"28px"}} />
+                                                }
+                                            </Grid>
+                                        </Grid> */}
                                 </Block>
-                                <Block className="h-[70vh] justify-between p-4">
+                                <Block className=" justify-between p-4">
                                     <Grid className="gap-5 p-2 z-10 self-end">
                                         <Block>
                                             <div style={{ color: "white", fontSize: "16px", maxWidth: "50%" }}>
@@ -781,7 +827,7 @@ const ShortCom = () => {
                                             </div>
                                         </Block>
                                         <Block className="gap-4 w-full">
-                                            <Image src={video?.userData?.userImg ? baseURL + video?.userData?.userImg : VideoCreator} classname="h-[36px] w-[36px] rounded-full object-cover border-2 border-white" />
+                                            <Image src={video?.userData?.userImg ? baseURL + video?.userData?.userImg : VideoCreator} style={{ width: "36px", height: "36px" }} classname=" rounded-full object-top object-cover border-2 border-white" />
                                             <Grid className="text-white text-[18px] font-semibold">{video?.userData?.userName}</Grid>
                                             <Grid onClick={() => handleFollow(video)} style={{ padding: "3px 20px", width: "78px", fontSize: "14px" }} className={`text-white cursor-pointer px-4 flex items-center py-1 w-[100px] bg-[#8000FF] ${animateFollow ? "animate-clicked" : ""}  rounded-md text-[18px] font-semibold`}> {getFollowUserData === true ? "Followed" : "Follow"}</Grid>
                                             <Image src={GiftIcon} style={{ width: "25px", height: "25px", cursor: "pointer" }} />
@@ -790,7 +836,7 @@ const ShortCom = () => {
 
                                     </Grid>
 
-                                    <Grid className="gap-8">
+                                    <Grid className="gap-[15px] mb-[2%]">
                                         {animateplayPause && (
                                             <Block
                                                 className={`absolute cursor-pointer  z-1 bg-gray-400 transition-transform rounded-full duration-500 ease-in-out p-2 right-[46%] top-[48%] ${animateplayPause ? "animate-clicked" : ""}`}>
@@ -812,7 +858,7 @@ const ShortCom = () => {
 
                                             <Grid className={`w-10 z-10 p-1 transition-transform rounded-full duration-500 ease-in-out ${animate && like ? "animate-clicked2" : ""}`}>
                                                 {
-                                                    getLikeUserData ? <Like2 /> : <Like />
+                                                    getLikeUserData ? <Like2 /> : <Like style={{ width: "35px", height: "35px" }} />
                                                 }
                                             </Grid>
                                             <Grid className="text-white z-10 font-semibold text-sm">{video?.like}</Grid>
@@ -830,13 +876,24 @@ const ShortCom = () => {
                                             <Grid className=" text-white font-semibold text-sm"> {save ? "Saved" : "Save"}</Grid>
                                         </Grid>
                                         <Grid className="items-center z-20 cursor-pointer" onClick={() => handleComment(video)}>
-                                            <Comment/>
+                                            <Comment />
                                             <Grid className=" text-white font-semibold text-sm">{video?.commentCount}</Grid>
                                         </Grid>
 
                                         <Grid className="items-center cursor-pointer z-20" onClick={() => setShare(true)}>
-                                            <Share/>
+                                            <Share />
                                             <Grid className=" text-white font-semibold text-xs">Share</Grid>
+                                        </Grid>
+                                        <Grid>
+                                            <div className="soundAnimation">
+                                                <div className="Soundicon">
+                                                    <span className="Soundbar"></span>
+                                                    <span className="Soundbar Soundsmall"></span>
+                                                    <span className="Soundbar"></span>
+                                                    <span className="Soundbar Soundsmall"></span>
+                                                    <span className="Soundbar"></span>
+                                                </div>
+                                            </div>
                                         </Grid>
                                         {/* <Grid className="border z-10 border-white rounded-md items-center p-2 shadow-sm">
                                     <Image src={Music} />

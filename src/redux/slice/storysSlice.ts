@@ -182,19 +182,19 @@ const storySlice = createSlice({
             })
 
 
-            .addCase(createCommentShort.pending, (state) => {
-                state.isSkeleton = true;
-            })
-            .addCase(createCommentShort.fulfilled, (state: any, action: any) => {
-                console.log(action.payload);  // Check the response structure
-                state.commentCount = action.payload.commentCount || 0;
-                state.shorts = state.shorts.unshift(action.payload?.short);
-                state.isSkeleton = false;
-                Success("Comment Add Successfully")
-            })
-            .addCase(createCommentShort.rejected, (state) => {
-                state.isSkeleton = false;
-            })
+            // .addCase(createCommentShort.pending, (state) => {
+            //     state.isSkeleton = true;
+            // })
+            // .addCase(createCommentShort.fulfilled, (state: any, action: any) => {
+            //     console.log(action.payload);  // Check the response structure
+            //     state.commentCount = action.payload.commentCount || 0;
+            //     state.shorts = state.shorts.unshift(action.payload?.short);
+            //     state.isSkeleton = false;
+            //     Success("Comment Add Successfully")
+            // })
+            // .addCase(createCommentShort.rejected, (state) => {
+            //     state.isSkeleton = false;
+            // })
 
             .addCase(getCommentForShort.pending, (state) => {
                 state.isSkeleton = true;
@@ -332,11 +332,11 @@ const storySlice = createSlice({
                     );
 
                     // Display appropriate notification
-                    if (updatedShort?.user?.userData?.followActive) {
-                        Success("Short Followed Successfully");
-                    } else {
-                        DangerRight("Short Unfollowed Successfully");
-                    }
+                    // if (updatedShort?.user?.userData?.followActive) {
+                    //     Success("Short Followed Successfully");
+                    // } else {
+                    //     DangerRight("Short Unfollowed Successfully");
+                    // }
                 }
                 state.isLoading = false;
             })

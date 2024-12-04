@@ -141,10 +141,21 @@ const shortSlice = createSlice({
             })
             .addCase(createCommentShort.fulfilled, (state: any, action: any) => {
                 console.log(action.payload);  // Check the response structure
+                
+                // Find the index of the short to update
+                const index = state.shorts.findIndex(short => short._id === action.payload.short._id);
+                
+                if (index !== -1) {
+                    // Replace the existing short with the updated one
+                    state.shorts[index] = action.payload.short;
+                } else {
+                    // Optionally, add it to the start if it doesn't exist
+                    state.shorts?.unshift(action.payload.short);
+                }
+            
                 state.commentCount = action.payload.commentCount || 0;
-                state.shorts = state.shorts.unshift(action.payload?.short);
                 state.isSkeleton = false;
-                Success("Comment Add Successfully")
+                Success("Comment Added Successfully");
             })
             .addCase(createCommentShort.rejected, (state) => {
                 state.isSkeleton = false;
@@ -196,6 +207,11 @@ const shortSlice = createSlice({
 
                 // Update the state
                 state.shorts = shorts;
+                if (action.meta.arg?.like) {
+                    Success("Like Successfully")
+                } else {
+                    DangerRight("DisLike Successfully")
+                }
                 state.isSkeleton = false;
             })
             .addCase(likeShort.rejected, (state) => {
@@ -281,16 +297,16 @@ const shortSlice = createSlice({
                     });
 
                     // Find the specific short that triggered the update
-                    const updatedShort = state.shorts.find(
-                        (short) => short?._id === action.meta.arg.shortId
-                    );
+                }
+                const updatedShort = state.shorts.find(
+                    (short) => short?._id === action.meta.arg.shortId
+                );
 
-                    // Display appropriate notification
-                    if (updatedShort?.user?.userData?.followActive) {
-                        Success("Short Followed Successfully");
-                    } else {
-                        DangerRight("Short Unfollowed Successfully");
-                    }
+                // Display appropriate notification
+                if (updatedShort?.user?.userData?.followActive) {
+                    Success("Short Followed Successfully");
+                } else {
+                    DangerRight("Short Unfollowed Successfully");
                 }
                 state.isLoading = false;
             })

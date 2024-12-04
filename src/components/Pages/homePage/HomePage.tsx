@@ -45,7 +45,7 @@ export default function HomePage() {
           <h6 style={{ marginLeft: "10px", color: "rgba(255, 255, 255, 1)" }}>Category's</h6>
         </Grid>
         <Block className="flex overflow-x-auto items-center space-x-2 mx-3 mt-3 mb-3 scrollbar-none">
-          {categoryData.map((category: any, index: number) => (
+          {categoryData?.map((category: any, index: number) => (
             <Block
               onClick={() => setcatSelect(category)}
               key={index}

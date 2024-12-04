@@ -247,7 +247,7 @@
 }
 
 .showShortContentBox .infinite-scroll-component {
-  height: 100vh !important;
+  height: calc(100vh - 52px) !important;
   overflow-y: scroll !important;
   scroll-snap-type: y mandatory !important;
   -webkit-overflow-scrolling: touch !important;
@@ -792,4 +792,80 @@
   border-radius: 10px;
   position: absolute;
   bottom: 1%;
+}
+
+
+/* Box styling */
+.soundAnimation {
+  width: 36px;
+  height: 36px;
+  background-color: #333;
+  border: 1px solid #FFFFFF;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Centered icon with animated bars */
+.Soundicon {
+  display: flex;
+  gap: 4px;
+}
+
+/* Bar styles */
+.Soundbar {
+  width: 2px;
+  height: 10px;
+  background-color: white;
+  border-radius: 4px;
+  animation: pulse 1s infinite ease-in-out;
+}
+
+.Soundbar.Soundsmall {
+  height: 8px;
+}
+
+/* Adding animation delays for individual bars */
+.Soundbar:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.Soundbar:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.Soundbar:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.Soundbar:nth-child(4) {
+  animation-delay: 0.6s;
+}
+
+.Soundbar:nth-child(5) {
+  animation-delay: 0.8s;
+}
+
+/* Keyframes for the pulsing effect */
+@keyframes pulse {
+  0%, 100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.5);
+  }
+}
+
+
+.bottomIconNavigatation svg{
+  fill: #8000FF !important;
+}
+
+
+.bottomIconNavigatation svg path{
+  color: #8000FF !important;
+  /* fill: #8000FF !important; */
+  /* border-color: #8000FF !important; */
 }
