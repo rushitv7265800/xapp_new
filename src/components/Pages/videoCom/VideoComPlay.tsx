@@ -73,59 +73,43 @@ import { RWebShare } from 'react-web-share';
 import { Success } from '../../utils/toastServices';
 // import UserProfilePage from '../UserProfilePage';
 
-dayjs.extend(relativeTime);
-const CategoryBar = () => {
-    const [CatSelect, setcatSelect] = useState("")
-    const categories = ["All", "Music", "Gaming", "News", "Sports", "Learning", "Live"];
-    return (
-        <Block className="ml-3 flex overflow-x-auto items-center mt-1 scrollbar-none space-x-2">
-            {categories?.map((category, index) => (
-                <Block
-                    onClick={() => setcatSelect(category)}
-                    key={index}
-                    className={`cursor-pointer flex-none ${CatSelect == category || (CatSelect == "" && index == 0) ? "text-black font-bold bg-white" : "text-white bg-[#2c2c2c]"} rounded-lg px-4 py-1 whitespace-nowrap text-[16px] font-bold border-none`}
-                >
-                    {category}
-                </Block>
-            ))}
-        </Block>
-    )
-}
-
-
-const AddHeader = () => {
-    return (
-        <Block className={"p-3 flex justify-between bg-black items-center"}>
-            <Block className={"space-x-3 "}>
-                <Grid className={"w-9 p-1 bg-white rounded-lg"}>
-                    <Image src={AddAppLogo} />
-                </Grid>
-                <Grid className={"flex"}>
-                    <Grid className={"text-[14.5px] text-white"}>Kotak Neo: Stocks Mutual... </Grid>
-                    <Grid>
-                        <Block>
-                            <Grid className={"text-[13px] text-white font-semibold"}>Sponsered</Grid>
-                            <Grid className={"w-[0.2rem] h-[0.2rem] rounded-full bg-white ml-1"}></Grid>
-                            <Block className={"ml-1 text-[13px] items-center flex opacity-[65%] leading-tight text-white"}>4.5<Block className={"w-[10px] mr-2 ml-0.5 mt-1 pb-1"}> <Star /></Block> FREE</Block>
-                        </Block>
-                    </Grid>
-                </Grid>
-            </Block>
-            <Block className={"gap-3"}>
-                <Grid className={"p-1.5 rounded-full bg-[#242424] w-[34px]"}>
-                    <DownArrow />
-                </Grid>
-                <Grid className={"px-4 py-1.5 bg-blue-500 rounded-3xl text-black font-bold"}>
-                    Install
-                </Grid>
-            </Block>
-        </Block>
-    )
-}
 
 
 
-const VideoComPlay = () => {
+// const AddHeader = () => {
+//     return (
+//         <Block className={"p-3 flex justify-between bg-black items-center"}>
+//             <Block className={"space-x-3 "}>
+//                 <Grid className={"w-9 p-1 bg-white rounded-lg"}>
+//                     <Image src={AddAppLogo} />
+//                 </Grid>
+//                 <Grid className={"flex"}>
+//                     <Grid className={"text-[14.5px] text-white"}>Kotak Neo: Stocks Mutual... </Grid>
+//                     <Grid>
+//                         <Block>
+//                             <Grid className={"text-[13px] text-white font-semibold"}>Sponsered</Grid>
+//                             <Grid className={"w-[0.2rem] h-[0.2rem] rounded-full bg-white ml-1"}></Grid>
+//                             <Block className={"ml-1 text-[13px] items-center flex opacity-[65%] leading-tight text-white"}>4.5<Block className={"w-[10px] mr-2 ml-0.5 mt-1 pb-1"}> <Star /></Block> FREE</Block>
+//                         </Block>
+//                     </Grid>
+//                 </Grid>
+//             </Block>
+//             <Block className={"gap-3"}>
+//                 <Grid className={"p-1.5 rounded-full bg-[#242424] w-[34px]"}>
+//                     <DownArrow />
+//                 </Grid>
+//                 <Grid className={"px-4 py-1.5 bg-blue-500 rounded-3xl text-black font-bold"}>
+//                     Install
+//                 </Grid>
+//             </Block>
+//         </Block>
+//     )
+// }
+
+
+
+export default function VideoComPlay() {
+    dayjs.extend(relativeTime);
     useEffect(() => {
         window.scrollTo(0, 0);  // Scroll to the top on component mount
     }, []);
@@ -147,6 +131,24 @@ const VideoComPlay = () => {
     const [videoOneDataGet, setVideoOneDataGet] = useState<any>()
     const [vidDes, setVideDes] = useState(false)
     const [save, setSave] = useState(false)
+
+    const CategoryBar = () => {
+        const [CatSelect, setcatSelect] = useState("")
+        const categories = ["All", "Music", "Gaming", "News", "Sports", "Learning", "Live"];
+        return (
+            <Block className="ml-3 flex overflow-x-auto items-center mt-1 scrollbar-none space-x-2">
+                {categories?.map((category, index) => (
+                    <Block
+                        onClick={() => setcatSelect(category)}
+                        key={index}
+                        className={`cursor-pointer flex-none ${CatSelect == category || (CatSelect == "" && index == 0) ? "text-black font-bold bg-white" : "text-white bg-[#2c2c2c]"} rounded-lg px-4 py-1 whitespace-nowrap text-[16px] font-bold border-none`}
+                    >
+                        {category}
+                    </Block>
+                ))}
+            </Block>
+        )
+    }
     useEffect(() => {
         setTimeout(() => {
             if (Object?.values(videoOneData)?.length > 0) {
@@ -211,13 +213,13 @@ const VideoComPlay = () => {
     }, [videoOneDataGet])
 
     const specifications = [
-        [<Like/>, totalLike, handleLike, true],
-        [<Share/>, "Share", handleShare, true],
-        [<Clip/>, "Clip", handleClip, false],
-        [<Download/>, "Download", handleDownload, true],
-        [<Report/>, "Report", handleReport, true],
-        [<Remix/>, "Remix", handleRemix, false],
-        [<Save/>, "Save", handleSave, false]
+        [<Like />, totalLike, handleLike, true],
+        [<Share />, "Share", handleShare, true],
+        [<Clip />, "Clip", handleClip, false],
+        [<Download />, "Download", handleDownload, true],
+        [<Report />, "Report", handleReport, true],
+        [<Remix />, "Remix", handleRemix, false],
+        [<Save />, "Save", handleSave, false]
     ];
 
     useEffect(() => {
@@ -305,10 +307,6 @@ const VideoComPlay = () => {
         )
     }
 
-
-
-
-
     const ClipDialog = () => {
         return (
             <div className="fixed inset-0 flex items-end justify-center z-20">
@@ -343,10 +341,10 @@ const VideoComPlay = () => {
             setNotyfy(false)
         }
         const notifyList = [
-            [<AllNotify/>, "All", handleAllNotify],
-            [<Notification/>, "Personalize", handlePersonalize],
-            [<BlockNotify/>, "None", handleBlockNotify],
-            [<Unsubscribe/>, "Unsubscribe", handleUnSubscribe],
+            [<AllNotify />, "All", handleAllNotify],
+            [<Notification />, "Personalize", handlePersonalize],
+            [<BlockNotify />, "None", handleBlockNotify],
+            [<Unsubscribe />, "Unsubscribe", handleUnSubscribe],
 
         ]
         return (
@@ -364,7 +362,7 @@ const VideoComPlay = () => {
                         <Block className={"w-full flex justify-between notificatioShow items-start"} onClick={typeof item[2] === 'function' ? item[2] : undefined}>
                             <Block className={"gap-x-5"}>
                                 <Grid className={"w-6"}>
-                                    {item[0] }
+                                    {item[0]}
                                 </Grid>
                                 <Grid className={"text-[16px] font-normal text-white"}>
                                     {item[1]}
@@ -920,14 +918,6 @@ const VideoComPlay = () => {
                         ref={videoRef}
                     />
                 </Grid>
-
-
-                <Grid>
-                    {
-                        false &&
-                        <AddHeader />
-                    }
-                </Grid>
             </div>
             <Grid className={"w-full h-[0.07rem] videoDataShow opacity-[70%] mt-[53vh] overflow-y-auto bg-gray-500"}></Grid>
             {/* Title and Description */}
@@ -969,7 +959,9 @@ const VideoComPlay = () => {
                             className="relative cursor-pointer flex items-center justify-center md:px-3 px-6 py-2 rounded-3xl bg-[#242424] hover:bg-[#333333] transition duration-300"
                             onClick={() => {
                                 if (typeof item[2] === 'function') {
-                                    !like ? setAnimate2(true) : "";
+                                    if (!like) {
+                                        setAnimate2(true);
+                                    }
                                     setTimeout(() => setAnimate2(false), 1200);
                                     item[2]();
                                 }
@@ -984,7 +976,7 @@ const VideoComPlay = () => {
                                     like && item[0] === Like ? (
                                         <Like2 />
                                     ) : (
-                                        item[0] 
+                                        item[0]
                                     )
                                 }
                             </div>
@@ -1124,5 +1116,3 @@ const VideoComPlay = () => {
         </Grid>
     );
 };
-
-export default VideoComPlay;

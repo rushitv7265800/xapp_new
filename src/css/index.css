@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 /* third-party libraries CSS */
-
+*{
+  font-family: "Roboto", sans-serif;
+}
 :root{
   --inputBackground:#232323
 }
@@ -12,6 +14,23 @@
   scroll-behavior: smooth;
 }
 
+::-webkit-scrollbar {
+  width: 6px;
+  height: 5px;
+}
+
+
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+  cursor: pointer;
+  border-radius: 10px;
+}
 
 h1,h2,h3,h4,h5,img,li,p{
   user-select: none;

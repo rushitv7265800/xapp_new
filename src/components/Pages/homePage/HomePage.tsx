@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate=useNavigate()
+  const navigate = useNavigate()
 
   const CategoryBar = () => {
     const { category } = useSelector((state: RootState) => state.category);
@@ -37,14 +37,14 @@ export default function HomePage() {
     // const { toggle } = Drawer.useDrawer();
 
     return (
-      <Block className={"xl:mt-20 lg:mt-18 mt-16  ml-3.5"}>
+      <Block className={"mt-14 ml-3.5"}>
         {/* <Grid onClick={toggle} style={{ display: "flex", alignItems: "center", flexDirection: "row" }} className={"px-3 w-[30%] min-width-[20%] py-[7px] rounded-lg bg-[#2c2c2c] flex items-center justify-center flex-row category"}> */}
         <Grid style={{ display: "flex", alignItems: "center", flexDirection: "row" }} className={"px-3 w-[30%] min-width-[20%] py-[7px] rounded-lg bg-[#2c2c2c] flex items-center justify-center flex-row category"}>
           {/* <Image src={} style={{ width: "30px" }} /> */}
           <Compass />
           <h6 style={{ marginLeft: "10px", color: "rgba(255, 255, 255, 1)" }}>Category's</h6>
         </Grid>
-        <Block className="flex overflow-x-auto items-center space-x-2 mx-3 mt-3 mb-3 scrollbar-none">
+        <Block className="flex overflow-x-auto no-scrollbar items-center space-x-2 mx-3 mt-3 mb-3 scrollbar-none">
           {categoryData?.map((category: any, index: number) => (
             <Block
               onClick={() => setcatSelect(category)}
@@ -95,11 +95,11 @@ export default function HomePage() {
           <img className="mx-2" src={StoryLogo} />
           <Grid className="text-[22px] font-extrabold">Shorts</Grid>
         </Block>
-        <div className="flex items-center lg:w-full w-[166%] lg:w-auto transition-all">
-          {shortsData?.slice(0, 5)?.map((short, index) => (
+        <div className="flex overflow-x-auto space-x-3 no-scrollbar">
+          {shortsData?.map((short, index) => (
             <Block
               key={index}
-              className="cursor-pointer relative bg-gray-800 rounded-lg ml-3 mr-3"
+              className="cursor-pointer relative bg-gray-800 flex-none w-[20%] h-[20%] flex items-center"
             >
               <Grid
                 onClick={() => setPost(true)}
@@ -115,7 +115,7 @@ export default function HomePage() {
                 className="object-cover rounded-lg w-[100%] h-[100%]"
               />
 
-              <Grid className="absolute bottom-2 left-2 text-white leading-snug font-medium text-[9px] sm:text-[16px] md:text-[12px]">
+              <Grid className="absolute bottom-2 left-2 text-white leading-snug font-medium text-[20px] sm:text-[16px] md:text-[20px]">
                 {short.shortTitle}
                 <span>
                   {short?.hashTag?.map((item: any) => {

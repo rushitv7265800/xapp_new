@@ -11,6 +11,8 @@ import Block from '../utils/customComponent/Block';
 import ShortCom from './shortCom/ShortCom';
 import VideoComPlay from './videoCom/VideoComPlay';
 import VideoCom from './videoCom/VideoCom';
+import UserAccountPage from './userProfile/UserAccountPage';
+import UserProfile from './userProfile/UserProfile';
 
 
 export default function UserPage() {
@@ -30,7 +32,7 @@ export default function UserPage() {
         { name: "Shorts", icon: ShortsSvg, show: true, router: "/user/shorts" },
         { name: "Add Video", icon: AddVideoLogo, show: true, router: "/user/Videos" },
         { name: "Subscription", icon: SubscriptionLogo, show: true, router: "" },
-        { name: getDataLocal?.userImg ? getDataLocal?.userName : "You", type: "userImg", icon: AccountSvg, show: true, router: "" }
+        { name: getDataLocal?.userImg ? getDataLocal?.userName : "You", type: "userImg", icon: AccountSvg, show: true, router: "/user/userPage" }
     ]
     const [showBottomBar, setShowBottomBar] = useState(true);
     const location = useLocation()
@@ -53,6 +55,8 @@ export default function UserPage() {
                         <Route path={`shorts`} element={<ShortCom />} />
                         <Route path={`Videos`} element={<VideoCom pb={0} />} />
                         <Route path={`playVideo`} element={<VideoComPlay />} />
+                        <Route path={`userPage`} element={<UserAccountPage />} />
+                        <Route path={`userProfile`} element={<UserProfile />} />
                     </Routes>
                     {showBottomBar && BottomScreensName[0].show && (
                         <Block className="bottom-navigator fixed bottom-0 left-0 z-50 w-full bg-white transition-transform transform duration-300 ease-in-out">
@@ -73,7 +77,7 @@ export default function UserPage() {
                                             className="inline-flex flex-col items-center justify-center button-nospan"
                                         >
                                             <Grid className={`items-center justify-center font-roboto ${currentScreen === item.name && "bottomIconNavigatation"} `}>
-                                                <IconComponent fill={'#0000'}/>
+                                                <IconComponent fill={'#0000'} />
                                                 {item.name === currentScreen && (
                                                     <span className="h-[3px]"></span>
                                                 )}

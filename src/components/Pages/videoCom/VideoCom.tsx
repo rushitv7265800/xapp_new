@@ -109,8 +109,8 @@ const VideoCom: React.FC<VideoComProps> = (props: any) => {
 
                             {/* Description (next to profile) */}
                             <Grid className="w-full">
-                                <Grid className="text-[14px] sm:text-[15px] md:text-[16px] text-white font-semibold leading-normal">
-                                    {video?.videoTitle}
+                                <Grid className=" text-[14px] sm:text-[15px] md:text-[16px] text-white font-semibold leading-normal">
+                                   <div className="showVideoTitle"> {video?.videoTitle}</div>
                                 </Grid>
                                 <Grid className="text-white opacity-70 text-[12px] sm:text-[13px] md:text-[14px]">
                                     {video?.views} views •{" "}

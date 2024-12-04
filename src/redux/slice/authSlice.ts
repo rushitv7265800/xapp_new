@@ -21,7 +21,7 @@ import { AxiosResponse } from "axios";
 
 interface AuthState {
   userProfile: any;
-  userSubscriptionData:any;
+  userSubscriptionData: any;
   userFollowData: any,
   isAuth: boolean;
   isLoading: boolean;
@@ -40,7 +40,7 @@ interface SignUpResponse {
 
 const initialState: AuthState = {
   userProfile: {},
-  userSubscriptionData:[],
+  userSubscriptionData: [],
   userFollowData: {},
   isAuth: false,
   isLoading: false,
@@ -145,6 +145,7 @@ const authSlice = createSlice({
         localStorage.setItem("user", JSON.stringify(token_));
         localStorage.setItem("isAuth", "true");
         Success("Login successfully");
+        window.location.href = "/user/home"
       } else {
         DangerRight(action?.payload?.message);
       }
@@ -234,7 +235,7 @@ const authSlice = createSlice({
     builder.addCase(getUserSubscription.rejected, (state) => {
       state.isLoading = false;
     })
-    
+
       .addCase(createfollowUser.pending, (state) => {
         state.isLoading = true;
       })
@@ -270,9 +271,9 @@ const authSlice = createSlice({
           follow: action.payload.data.followCount,
         };
         state.userFollowData = updatedData
-        if(action.payload.follow === true){
+        if (action.payload.follow === true) {
           Success(action.payload.message);
-        }else{
+        } else {
           DangerRight(action.payload.message);
         }
         state.isLoading = false;

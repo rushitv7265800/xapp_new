@@ -1,5 +1,5 @@
-export const baseURL = "http://localhost:3000/"
-// export const baseURL = "https://xappserver.onrender.com/"
+// export const baseURL = "http://localhost:3000/"
+export const baseURL = "https://xappserver.onrender.com/"
 export const projectName = "xapp";
 
 // const getUserData = JSON.parse(localStorage.getItem("user") || "") || "";

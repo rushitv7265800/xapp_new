@@ -13,9 +13,7 @@
   height: 5px;
 }
 
-.videoContent {
-  background-color: #000000 !important;
-}
+
 
 .scrollbarShow::-webkit-scrollbar-track {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
@@ -26,6 +24,19 @@
   outline: 1px solid slategrey;
   cursor: pointer;
   border-radius: 10px;
+}
+
+.showVideoTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+}
+
+.videoContent {
+  background-color: #000000 !important;
 }
 
 .loader {
@@ -784,7 +795,8 @@
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
 }
-.logoPageLogo .bottomWhiteLine{
+
+.logoPageLogo .bottomWhiteLine {
   background-color: #FFFFFF;
   width: 134px;
   height: 5px;
@@ -850,22 +862,56 @@
 
 /* Keyframes for the pulsing effect */
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scaleY(1);
   }
+
   50% {
     transform: scaleY(1.5);
   }
 }
 
 
-.bottomIconNavigatation svg{
+.bottomIconNavigatation svg {
   fill: #8000FF !important;
 }
 
 
-.bottomIconNavigatation svg path{
+.bottomIconNavigatation svg path {
   color: #8000FF !important;
   /* fill: #8000FF !important; */
   /* border-color: #8000FF !important; */
+}
+
+.showAccount .showBottomBoxButton svg {
+  width: 24px;
+  height: 24px;
+}
+
+.showAccount .showAccBtn {
+  padding: 12px 0px;
+  cursor: pointer;
+  margin: 0px !important;
+}
+
+.showAccount .showAccBtn:hover {
+  background-color: #282727;
+  padding: 12px 10px;
+  border-radius: 10px;
+  margin: 4px 0px !important;
+}
+
+.profilePage header{
+  z-index: 9999999;
+  position: relative;
+}
+.profilePage .profilePageBG {
+  background-image: url('../assets/AccountIcons/userProfileBg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  position: absolute;
+  height: 30%;
 }

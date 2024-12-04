@@ -60,7 +60,7 @@ const VideoComponent: React.FC<VideoComponentProps> = ({ pb }) => {
             {/* Responsive grid layout */}
             <Block className="text-white text-lg xl:my-8 lg:my-6 md:my-4 my-2  inline-flex justify-start items-start">
                 {/* <img className="mx-2" src={VideoIcon} width="30px" height="30px"/> */}
-                <VideoIcon style={{ width: "30px", height: "30px" }} />
+                <VideoIcon style={{ width: "30px", height: "30px",marginRight:"10px" }} />
                 <Grid className="text-[22px] font-extrabold">Videos</Grid>
             </Block>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-x-4 md:gap-y-6 sm:gap-y-4  gap-y-0 pb-0">
@@ -108,10 +108,10 @@ const VideoComponent: React.FC<VideoComponentProps> = ({ pb }) => {
 
                             {/* Description (next to profile) */}
                             <Grid className="w-full">
-                                <Grid className="text-[14px] sm:text-[15px] md:text-[16px] text-white font-semibold leading-normal">
+                                <Grid className=" showVideoTitle text-[14px] sm:text-[15px] md:text-[16px] text-white font-semibold leading-normal">
                                     {video?.videoTitle}
                                 </Grid>
-                                <Grid className="text-white opacity-70 text-[12px] sm:text-[13px] md:text-[14px]">
+                                <Grid className="text-white opacity-70 text-[12px] sm:text-[12px] md:text-[12px]">
                                     {video?.views} views •{" "}
                                     {video?.date}
                                 </Grid>
