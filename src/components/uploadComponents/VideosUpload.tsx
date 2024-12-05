@@ -500,7 +500,6 @@ const VideosUpload = () => {
             Open Camera
           </button>
 
-          {/* Rotate Button (Visible when camera is active) */}
           {videoMetaData && videoMetaData?.cameraActive && (
             <button
               onClick={rotateVideo}
@@ -510,8 +509,8 @@ const VideosUpload = () => {
             </button>
           )}
         </Grid>
-
-        {videoMetaData?.cameraActive && (
+<div >
+{videoMetaData?.cameraActive && (
           <>
             {videoMetaData.isRecording ? playSound() : pauseSound()}
             <Grid className="w-full flex justify-center relative mt-4">
@@ -553,6 +552,7 @@ const VideosUpload = () => {
             </Grid>
           </>
         )}
+  </div>
 
         {/* Gallery Upload Section */}
         <Grid className="w-full flex space-y-4 my-6">
@@ -574,23 +574,26 @@ const VideosUpload = () => {
         <Block className="w-full overflow-x-auto">
           <Block className="w-full space-y-6 overflow-auto">
             <Grid className="relative flex-shrink-0 overflow-y-auto w-full space-y-4">
-              <div className="relative flex justify-center">
-                {videoMetaData.videoURL && (
-                  <video
-                    controls
-                    src={videoMetaData.videoURL} // Use videoURL for preview
-                    className="w-[60%] h-[350px] rounded-lg object-cover shadow-lg"
-                  />
-                )}
-                {videoMetaData.video && (
-                  <button
-                    onClick={handleRemoveShort}
-                    className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white rounded-full px-3 py-2 text-xs z-5 shadow-lg"
-                  >
-                    ✕
-                  </button>
-                )}
-              </div>
+              {videoMetaData.video && (
+                <div className="relative flex justify-cente r w-[100%] h-[350px]">
+                  {videoMetaData.videoURL && (
+                    <video
+                      controls
+                      src={videoMetaData.videoURL} // Use videoURL for preview
+                      className=" rounded-lg object-cover shadow-lg"
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  )}
+                  {videoMetaData.video && (
+                    <button
+                      onClick={handleRemoveShort}
+                      className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white rounded-full px-3 py-2 text-xs z-5 shadow-lg"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+              )}
 
               <label className="block text-white text-lg">
                 Upload video thumbnail (Poster)
@@ -605,22 +608,25 @@ const VideosUpload = () => {
                 <span className="text-red-500 text-xs">{errors.thumbnail}</span>
               )}
 
-              <div className="relative flex justify-center">
-                {videoMetaData.imageURL && (
-                  <img
-                    src={videoMetaData.imageURL} // Use videoURL for preview
-                    className="w-[60%] h-[350px] rounded-lg object-cover shadow-lg"
-                  />
-                )}
-                {videoMetaData.image && (
-                  <button
-                    onClick={handleRemoveImage}
-                    className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white rounded-full px-3 py-2 text-xs z-10 shadow-lg"
-                  >
-                    ✕
-                  </button>
-                )}
-              </div>
+              {videoMetaData.image && (
+                <div className="relative flex justify-center w-[100%] h-[350px]">
+                  {videoMetaData.imageURL && (
+                    <img
+                      src={videoMetaData.imageURL} // Use videoURL for preview
+                      className=" rounded-lg object-cover shadow-lg"
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  )}
+                  {videoMetaData.image && (
+                    <button
+                      onClick={handleRemoveImage}
+                      className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white rounded-full px-3 py-2 text-xs z-10 shadow-lg"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+              )}
 
               <Block className="space-x-4 mt-6">
                 <label
