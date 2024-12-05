@@ -17,6 +17,7 @@ import CategoriesCom from './categoriesCom/CategoriesCom';
 import EditPageProfile from './userProfile/EditPageProfile';
 import VideosUpload from '../../components/uploadComponents/VideosUpload';
 import ShortsUpload from '../../components/uploadComponents/ShortsUpload';
+import History from './userProfile/History';
 // import History from './userProfile/History';
 
 
@@ -51,6 +52,7 @@ export default function UserPage() {
 
     return (
         <div>
+
             <Grid className="md:items-center w-full h-[100vh]">
                 <Grid className="w-full">
                     {/* <ShowScreen /> */}
@@ -65,7 +67,7 @@ export default function UserPage() {
                         <Route path={`shortsUpload`} element={<ShortsUpload />} />
                         <Route path={`editPageProfile`} element={<EditPageProfile />} />
                         <Route path={`categories`} element={<CategoriesCom />} />
-                        {/* <Route path={`history`} element={<History />} /> */}
+                        <Route path={`history`} element={<History />} />
 
               
 

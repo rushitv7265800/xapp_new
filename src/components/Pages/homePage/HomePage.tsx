@@ -164,6 +164,7 @@ export default function HomePage() {
         <Grid className="flex overflow-x-[250px]">
           <VideoComponent pb={4} />
         </Grid>
+      
       </div>
     </div>
   );
