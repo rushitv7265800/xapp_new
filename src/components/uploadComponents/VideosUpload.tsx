@@ -517,7 +517,7 @@ const VideosUpload = () => {
               <video
                 ref={videoRef}
                 className={`w-full rounded-lg object-cover transform rotate-${videoMetaData.rotateAngle}`}
-                style={{ filter: videoMetaData.filters }}
+                style={{ filter: videoMetaData.filters,position:"relative",height:"unset" }}
               />
 
               <Grid className="absolute text-white text-xs font-medium items-start space-y-2 top-12 right-2">
