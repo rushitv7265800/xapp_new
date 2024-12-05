@@ -12,7 +12,6 @@ interface StateSlice {
   }
   
   const selectStates = (state: RootState) => state;
-  
   export const isLoading = createSelector(
     selectStates,
     (state) => {

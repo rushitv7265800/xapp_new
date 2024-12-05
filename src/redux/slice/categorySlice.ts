@@ -12,13 +12,11 @@ interface Category {
 
 interface CategoryState {
     category: Category[];
-    isSkeleton: boolean;
     isLoading: boolean;
 }
 
 const initialState: CategoryState = {
     category: [],
-    isSkeleton: false,
     isLoading: false,
 };
 
@@ -62,15 +60,15 @@ const categorySlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(getAllCategory.pending, (state) => {
-                state.isSkeleton = true;
+                state.isLoading = true;
             })
             .addCase(getAllCategory.fulfilled, (state, action:any) => {
                 console.log(action.payload);  // Check the response structure
                 state.category = action.payload.data?.category || [];
-                state.isSkeleton = false;
+                state.isLoading = false;
             })
             .addCase(getAllCategory.rejected, (state) => {
-                state.isSkeleton = false;
+                state.isLoading = false;
             })
 
             .addCase(createCategory.pending, (state) => {

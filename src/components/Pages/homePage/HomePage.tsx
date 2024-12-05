@@ -60,15 +60,13 @@ export default function HomePage() {
             <Block
               onClick={() => setcatSelect(category)}
               key={index}
-              className={`cursor-pointer flex-none ${
-                CatSelect == category || (CatSelect == "" && index === 0)
-                  ? "text-black font-bold bg-white"
-                  : "text-white bg-[#2c2c2c]"
-              } rounded-lg px-4 py-1.5 whitespace-nowrap text-[16px]  font-bold border ${
-                index === 1
+              className={`cursor-pointer flex-none ${CatSelect == category || (CatSelect == "" && index === 0)
+                ? "text-black font-bold bg-white"
+                : "text-white bg-[#2c2c2c]"
+                } rounded-lg px-4 py-1.5 whitespace-nowrap text-[16px]  font-bold border ${index === 1
                   ? "border-b-yellow-400 border-t-red-500 border-l-lime-400 border-r-blue-500"
                   : "border-none"
-              }`}
+                }`}
             >
               {category?.name}
             </Block>
@@ -104,8 +102,8 @@ export default function HomePage() {
 
     const handleShorts = (short: any) => {
       console.log("Short clicked:", short);
-      localStorage.setItem("selectShort", JSON.stringify(short));
-      navigate("/user/shorts");
+      sessionStorage.setItem("selectShort", JSON.stringify(short));
+      navigate("/user/shorts", { state: { key: "homePage" } });
     };
 
     return (

@@ -1,12 +1,15 @@
 import { useSelector } from 'react-redux';
 import { isLoading } from './allSelector';
-import '../main.css'
-
+import { useEffect } from 'react';
 
 const Loader = () => {
 
 
     const roleLoader = useSelector(isLoading)
+
+    useEffect(() => {
+        console.log("roleLoader", roleLoader)
+    }, [roleLoader])
 
     return (
         <>

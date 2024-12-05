@@ -69,11 +69,9 @@
     font-size: 11px !important;
   }
 
-  .storyViewModel {
-  }
+  .storyViewModel {}
 
-  .storyViewModel .topButtonShow {
-  }
+  .storyViewModel .topButtonShow {}
 
   .storyViewModel .topButtonShow .showUserImgBox {
     padding: 0px 8px;
@@ -90,8 +88,7 @@
     margin-left: -1px;
   }
 
-  .storyViewModel .slider-container .prev {
-  }
+  .storyViewModel .slider-container .prev {}
 
   .storyViewModel .slider-container .prev img {
     width: 28px !important;
@@ -100,12 +97,15 @@
   .storyViewModel .slider-container .next img {
     width: 28px !important;
   }
+
   .storyViewModel .bottomHearBox {
     bottom: 28px !important;
   }
+
   .storyViewModel .bottomHearBox button {
     padding: 2px !important;
   }
+
   .storyViewModel .bottomHearBox button img {
     width: 35px !important;
     height: 35px !important;
@@ -425,6 +425,7 @@
 }
 
 @media (max-width: 768px) {
+
   .dialog-box-body {
     width: 95%;
     padding: 15px;
@@ -463,6 +464,7 @@
 }
 
 @media (max-width: 425px) {
+
   .Shorts {
     width: 40rem;
   }
@@ -481,15 +483,23 @@
 }
 
 @media (max-width: 768px) {
+
+  .userProfileDetail {
+    margin-top: 18% !important;
+  }
+
   .responsive-text {
     font-size: 14px;
   }
+
   .responsive-hashtag {
     font-size: 14px;
   }
+
   .responsive-username {
     font-size: 16px;
   }
+
   .responsive-caption {
     font-size: 14px;
     line-height: 1.4;
@@ -505,7 +515,26 @@
 
 
 @media (max-width: 320px) {
-  .shorts-text{
+  .shorts-text {
     width: 100%;
+  }
+}
+
+@media only screen and (min-width: 320px) and (max-width: 500px) {
+  .videoShowContent {
+    height: 262px !important;
+  }
+}
+
+@media only screen and (min-width: 500px) and (max-width: 768px) {
+  .videoShowContent {
+    height: 350px !important;
+  }
+}
+
+@media only screen and (min-width: 1024px) and (max-width: 1762px) {
+  .videoShowContent {
+    object-fit: fill  !important;
+    height: 230px !important;
   }
 }

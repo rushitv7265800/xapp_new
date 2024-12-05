@@ -1,4 +1,5 @@
 // export const baseURL = "http://localhost:3000/"
+// export const baseURL = "http://192.168.1.3:3000/"
 export const baseURL = "https://xappserver.onrender.com/"
 export const projectName = "xapp";
 

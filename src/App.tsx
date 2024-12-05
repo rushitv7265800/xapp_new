@@ -10,12 +10,14 @@ import AuthRouter from './components/Pages/authPage/AuthRouter';
 import SignUp from './components/Pages/authPage/singUp';
 import PrivateRouter from './components/Pages/authPage/PrivateRouter';
 import UserPage from './components/Pages/UserPage';
+import Loader from './components/utils/LoaderCom';
 
 function App() {
 
 
   return (
     <div>
+      <Loader />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LogoPage />} />

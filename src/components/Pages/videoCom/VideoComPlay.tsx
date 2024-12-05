@@ -115,7 +115,7 @@ export default function VideoComPlay() {
     }, []);
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate()
-    const { videoOneData } = useSelector((state: any) => state.videos);
+    const { videoOneData, isLoading } = useSelector((state: any) => state.videos);
     const [videoSpecfication, setVideoSpecification] = useState(false)
     const [share, setShare] = useState(false)
     const locationVideoId = useLocation()
@@ -150,14 +150,9 @@ export default function VideoComPlay() {
         )
     }
     useEffect(() => {
-        setTimeout(() => {
-            if (Object?.values(videoOneData)?.length > 0) {
-                setVideoOneDataGet(videoOneData)
-            } else {
-                // setVideoOneDataGet(JSON.stringify(""))
-            }
-        }, 500);
+        setVideoOneDataGet(videoOneData)
     }, [videoOneData])
+
     const checkLikeFilter = videoOneDataGet && videoOneDataGet?.likeData?.filter((item: any) => item?.userId === userData_?._id);
     const checkLike = checkLikeFilter && checkLikeFilter.length > 0 ? checkLikeFilter[0]?.like : false;
 
@@ -830,289 +825,302 @@ export default function VideoComPlay() {
     }
     //Full Page
     return (
-        <Grid className="bg-black font-roboto relative overflow-hidden">
-            {/* Play video */}
-            <div
-                className="fixed z-10 w-full"
-                id="video-container"
-            >
-                <Grid className="videoContent  w-full h-54vh] relative">
-                    {controls && (
-                        <Block className="absolute z-1 w-full justify-between p-4">
-                            <Block onClick={() => navigate("/user/home")}>
-                                <DownArrow className="w-4" />
-                            </Block>
-                            <Block className="space-x-5">
-                                {/* <Grid onClick={() => setCast(true)}>
+        <>
+            <Grid className="bg-black font-roboto relative overflow-hidden">
+                {/* Play video */}
+                <div
+                    className="fixed z-10 w-full"
+                    id="video-container"
+                >
+                    <Grid className="videoContent  w-full h-54vh] relative">
+                        {controls && (
+                            <Block className="absolute z-1 w-full justify-between p-4">
+                                <Block onClick={() => navigate("/user/home")}>
+                                    <DownArrow className="w-4" />
+                                </Block>
+                                <Block className="space-x-5">
+                                    {/* <Grid onClick={() => setCast(true)}>
                                     <Image src={Cast} />
                                 </Grid>
                                 <Grid>
                                     <Image src={CC2} />
                                 </Grid> */}
-                                {/* <Grid onClick={() => setVideoAssets(true)}>
+                                    {/* <Grid onClick={() => setVideoAssets(true)}>
                                     <Image src={VertiDots} />
                                 </Grid> */}
+                                </Block>
                             </Block>
-                        </Block>
-                    )}
+                        )}
 
-                    {controls && (
-                        <Block
-                            onClick={handlePlayPause}
-                            className="absolute z-1 right-[46%] top-[45%]">
-                            {
-                                playPause && !(formatTime(currentTime) == formatTime(duration)) ?
-                                    <PauseVideoIcon /> : <PlayVidIcon />
-                            }
-                            {/* <Image src={playPause && !(formatTime(currentTime) == formatTime(duration)) ? PauseVideoIcon : PlayVidIcon} /> */}
-                        </Block>
-                    )}
-
-                    {controls && (
-                        <Block className={"bottom-0 px-4 w-full justify-between z-1 right-0 absolute"}>
-                            <Block className="px-2 w-fit bg-black rounded-md text-white text-[12px] m-3 py-1 ">
-                                {formatTime(currentTime)} / {formatTime(duration)}
-
-                            </Block>
-                            <Grid onClick={toggleFullscreen} className="w-5 h-5">
+                        {controls && (
+                            <Block
+                                onClick={handlePlayPause}
+                                className="absolute z-1 right-[46%] top-[45%]">
                                 {
-                                    !Maxamize ? <MaximizeVideo /> : <MinimizeVideo />
+                                    playPause && !(formatTime(currentTime) == formatTime(duration)) ?
+                                        <PauseVideoIcon /> : <PlayVidIcon />
                                 }
-                            </Grid>
-                        </Block>
-                    )}
+                                {/* <Image src={playPause && !(formatTime(currentTime) == formatTime(duration)) ? PauseVideoIcon : PlayVidIcon} /> */}
+                            </Block>
+                        )}
+
+                        {controls && (
+                            <Block className={"bottom-0 px-4 w-full justify-between z-1 right-0 absolute"}>
+                                <Block className="px-2 w-fit bg-black rounded-md text-white text-[12px] m-3 py-1 ">
+                                    {formatTime(currentTime)} / {formatTime(duration)}
+
+                                </Block>
+                                <Grid onClick={toggleFullscreen} className="w-5 h-5">
+                                    {
+                                        !Maxamize ? <MaximizeVideo /> : <MinimizeVideo />
+                                    }
+                                </Grid>
+                            </Block>
+                        )}
 
 
 
-                    <div className="w-full h-1 bg-gray-300 absolute bottom-0">
-                        <div
-                            className="h-1 bg-blue-600"
-                            style={{ width: `${progress}%` }}
-                        ></div>
-                    </div>
+                        <div className="w-full h-1 bg-gray-300 absolute bottom-0">
+                            <div
+                                className="h-1 bg-blue-600"
+                                style={{ width: `${progress}%` }}
+                            ></div>
+                        </div>
 
-                    <video
-                        onClick={() => setControls(prev => !prev)}
-                        onTimeUpdate={() => {
-                            if (videoRef.current) {
-                                setCurrentTime(videoRef.current.currentTime);
-                            }
-                        }}
-                        onLoadedMetadata={() => {
-                            if (videoRef.current) {
-                                setDuration(videoRef.current.duration);
-                            }
-                        }}
-                        onDoubleClick={(e) => {
-                            const rect = e.currentTarget.getBoundingClientRect();
-                            const clickX = e.clientX - rect.left;
-                            if (clickX < rect.width / 2) {
-                                handleRewind();
-                            } else {
-                                handleFastForward();
-                            }
-                        }}
-                        src={videoOneDataGet && videoOneDataGet?.videoFile ? baseURL + videoOneDataGet?.videoFile : ""}
-                        className="w-full  bg-cover object-contain videoMainShow"
-                        style={{ backgroundColor: "#000000", height: "53vh" }}
-                        ref={videoRef}
-                    />
-                </Grid>
-            </div>
-            <Grid className={"w-full h-[0.07rem] videoDataShow opacity-[70%] mt-[53vh] overflow-y-auto bg-gray-500"}></Grid>
-            {/* Title and Description */}
-            <Block className={"px-3.5  pt-3 flex"} style={{ justifyContent: "space-between" }}>
-                <Grid className={"text-[19.5px] font-bold leading-snug opacity-[90%] text-white"} style={{ textTransform: "capitalize" }}>
-                    {videoOneDataGet && videoOneDataGet?.videoTitle}
-                </Grid>
+                        <video
+                            onClick={() => setControls(prev => !prev)}
+                            onTimeUpdate={() => {
+                                if (videoRef.current) {
+                                    setCurrentTime(videoRef.current.currentTime);
+                                }
+                            }}
+                            onLoadedMetadata={() => {
+                                if (videoRef.current) {
+                                    setDuration(videoRef.current.duration);
+                                }
+                            }}
+                            onDoubleClick={(e) => {
+                                const rect = e.currentTarget.getBoundingClientRect();
+                                const clickX = e.clientX - rect.left;
+                                if (clickX < rect.width / 2) {
+                                    handleRewind();
+                                } else {
+                                    handleFastForward();
+                                }
+                            }}
+                            src={videoOneDataGet && videoOneDataGet?.videoFile ? baseURL + videoOneDataGet?.videoFile : ""}
+                            className="w-full  bg-cover object-contain videoMainShow"
+                            style={{ backgroundColor: "#000000", height: "53vh" }}
+                            ref={videoRef}
+                        />
+                    </Grid>
+                </div>
+                <Grid className={"w-full h-[0.07rem] videoDataShow opacity-[70%] mt-[53vh] overflow-y-auto bg-gray-500"}></Grid>
+                {/* Title and Description */}
+                <Block className={"px-3.5  pt-3 flex"} style={{ justifyContent: "space-between" }}>
+                    <Grid className={"text-[19.5px] font-bold leading-snug opacity-[90%] text-white"} style={{ textTransform: "capitalize" }}>
+                        {videoOneDataGet && videoOneDataGet?.videoTitle}
+                    </Grid>
 
-                <button onClick={() => setVideDes(!vidDes)} style={{ transform: `${vidDes === true ? "rotate(180deg)" : "unset"}` }}><VectorIcon /></button>
-            </Block>
-            <Block className={"px-3 pt-2"}>
-                <Grid className={"text-[12.5px] text-white  flex"} style={{ flexDirection: "row", alignItems: "center" }}>
-                    <span className={"opacity-[60%]"}>{videoOneDataGet && videoOneDataGet?.views} views {DateTime.DateToLocal(new Date(videoOneDataGet?.createdAt))}</span>
-                    {
-                        videoOneDataGet && videoOneDataGet?.hashTag?.map((item: any) => {
-                            return (
-                                <span className={"text-[12.5px] "} style={{ marginLeft: "10px", color: "rgb(37, 99, 235)", fontWeight: "bold" }}>{item}</span>
-                            )
-                        })
-                    }
-                </Grid>
-                {/* <button onClick={() => setVideDes(!vidDes)}>
+                    <button onClick={() => setVideDes(!vidDes)} style={{ transform: `${vidDes === true ? "rotate(180deg)" : "unset"}` }}><VectorIcon /></button>
+                </Block>
+                <Block className={"px-3 pt-2"}>
+                    <Grid className={"text-[12.5px] text-white  flex"} style={{ flexDirection: "row", alignItems: "center" }}>
+                        <span className={"opacity-[60%]"}>{videoOneDataGet && videoOneDataGet?.views} views {DateTime.DateToLocal(new Date(videoOneDataGet?.createdAt))}</span>
+                        {
+                            videoOneDataGet && videoOneDataGet?.hashTag?.map((item: any) => {
+                                return (
+                                    <span className={"text-[12.5px] "} style={{ marginLeft: "10px", color: "rgb(37, 99, 235)", fontWeight: "bold" }}>{item}</span>
+                                )
+                            })
+                        }
+                    </Grid>
+                    {/* <button onClick={() => setVideDes(!vidDes)}>
                     <Grid style={{ cursor: "pointer" }} className={"text-[12.5px] text-white font-semibold opacity-[70%] ml-2"}> {vidDes === false ? "...more" : "...less"}</Grid>
                 </button> */}
-            </Block>
-            {
-                vidDes === true &&
-                <NewVideoDescription />
-            }
-            {/* {
+                </Block>
+                {
+                    vidDes === true &&
+                    <NewVideoDescription />
+                }
+                {/* {
                 vidDes === true &&
                 <VideoDescription video={video} />
             } */}
-            <Block className="text-xs mt-3 overflow-x-auto scrollbar-none space-x-2 pl-3 py-2 flex items-center">
-                {specifications && specifications.map((item: any, index: number) => (
-                    item[3] === true && (
-                        <Block
-                            key={index}
-                            className="relative cursor-pointer flex items-center justify-center md:px-3 px-6 py-2 rounded-3xl bg-[#242424] hover:bg-[#333333] transition duration-300"
-                            onClick={() => {
-                                if (typeof item[2] === 'function') {
-                                    if (!like) {
-                                        setAnimate2(true);
+                <Block className="text-xs mt-3 overflow-x-auto scrollbar-none space-x-2 pl-3 py-2 flex items-center">
+                    {specifications && specifications.map((item: any, index: number) => (
+                        item[3] === true && (
+                            <Block
+                                key={index}
+                                className="relative cursor-pointer flex items-center justify-center md:px-3 px-6 py-2 rounded-3xl bg-[#242424] hover:bg-[#333333] transition duration-300"
+                                onClick={() => {
+                                    if (typeof item[2] === 'function') {
+                                        if (!like) {
+                                            setAnimate2(true);
+                                        }
+                                        setTimeout(() => setAnimate2(false), 1200);
+                                        item[2]();
                                     }
-                                    setTimeout(() => setAnimate2(false), 1200);
-                                    item[2]();
-                                }
-                            }}
-                        >
-                            <div
-                                onClick={like && item[0] === Like ? handleLike : undefined}
-                                className={`w-8 h-8 rounded-full p-1 transition-transform duration-500 ease-in-out ${animate2 && checkLike && item[0] === Like ? 'animate-clicked2' : ''}`}
-                                style={{ opacity: `${checkLike ? "1" : "0.6"}`, cursor: 'pointer' }}
+                                }}
                             >
-                                {
-                                    like && item[0] === Like ? (
-                                        <Like2 />
-                                    ) : (
-                                        item[0]
-                                    )
+                                <div
+                                    onClick={like && item[0] === Like ? handleLike : undefined}
+                                    className={`w-8 h-8 rounded-full p-1 transition-transform duration-500 ease-in-out ${animate2 && checkLike && item[0] === Like ? 'animate-clicked2' : ''}`}
+                                    style={{ opacity: `${checkLike ? "1" : "0.6"}`, cursor: 'pointer' }}
+                                >
+                                    {
+                                        like && item[0] === Like ? (
+                                            <Like2 />
+                                        ) : (
+                                            item[0]
+                                        )
+                                    }
+                                </div>
+                                <div className="lg:text-base text-sm ml-3 text-white">
+                                    {item[1]}
+                                </div>
+                            </Block>
+                        )
+                    ))}
+
+                </Block>
+
+                <Block className={"flex justify-between pl-1"} style={{ margin: "10px", padding: "6px 4px", borderTop: "0.5px solid #CECECE", borderBottom: "0.5px solid #CECECE" }}>
+                    <Block className={"gap-x-3"} >
+                        <Block className={"flex gap-2"}>
+                            <Image
+                                src={videoOneDataGet && videoOneDataGet?.user ? baseURL + videoOneDataGet?.user?.userImg : baseURL + videoOneDataGet?.userData?.userImg
                                 }
-                            </div>
-                            <div className="lg:text-base text-sm ml-3 text-white">
-                                {item[1]}
+                                style={{ borderRadius: "40px", width: "40px", height: "40px", objectFit: "cover", objectPosition: "top" }}
+                            />
+                            <div style={{ display: "flex", flexDirection: "column" }}>
+                                <Grid className={"text-[14px]"} style={{ color: "#2563eb", fontWeight: "bold" }}>{videoOneDataGet && videoOneDataGet?.user?.userName}</Grid>
+                                <Grid className={"text-[12.5px] text-[#ffffff] font-normal "}>{followDataGet?.follow ? followDataGet?.follow + " " + "Follower" : (0 + " " + "Follow")}</Grid>
                             </div>
                         </Block>
-                    )
-                ))}
-
-            </Block>
-
-            <Block className={"flex justify-between pl-1"} style={{ margin: "10px", padding: "6px 4px", borderTop: "0.5px solid #CECECE", borderBottom: "0.5px solid #CECECE" }}>
-                <Block className={"gap-x-3"} >
-                    <Block className={"flex gap-2"}>
-                        <Image
-                            src={videoOneDataGet && videoOneDataGet?.user ? baseURL + videoOneDataGet?.user?.userImg : baseURL + videoOneDataGet?.userData?.userImg
-                            }
-                            style={{ borderRadius: "40px", width: "40px", height: "40px", objectFit: "cover", objectPosition: "top" }}
-                        />
-                        <div style={{ display: "flex", flexDirection: "column" }}>
-                            <Grid className={"text-[14px]"} style={{ color: "#2563eb", fontWeight: "bold" }}>{videoOneDataGet && videoOneDataGet?.user?.userName}</Grid>
-                            <Grid className={"text-[12.5px] text-[#ffffff] font-normal "}>{followDataGet?.follow ? followDataGet?.follow + " " + "Follower" : (0 + " " + "Follow")}</Grid>
-                        </div>
                     </Block>
-                </Block>
-                {subscribers?.userData?.followActive === true ?
-                    <Block className={"gap-3 "}>
-                        <Block className={`px-3.5 py-1 bg-white text-[14.5px] font-bold rounded-3xl text-black }`} >
-                            {subscribers?.userData?.followActive === true ? "Unfollow" : "follow"}
-                            <Block
-                                className={"px-2 py-1 ml-2 cursor-pointer bg-[#242424] font-bold rounded-3xl text-black"}
-                                onClick={handleNotification}
-                            >
-                                <Grid className={"w-6"}>
+                    {subscribers?.userData?.followActive === true ?
+                        <Block className={"gap-3 "}>
+                            <Block className={`px-3.5 py-1 bg-white text-[14.5px] font-bold rounded-3xl text-black }`} >
+                                {subscribers?.userData?.followActive === true ? "Unfollow" : "follow"}
+                                <Block
+                                    className={"px-2 py-1 ml-2 cursor-pointer bg-[#242424] font-bold rounded-3xl text-black"}
+                                    onClick={handleNotification}
+                                >
+                                    <Grid className={"w-6"}>
 
-                                    {
-                                        selectedNotification === 'All' ? <AllNotify style={{ width: "20px" }} /> : selectedNotification === 'Personalize' ? <Notification style={{ width: "20px" }} /> : selectedNotification === 'None' ? <BlockNotify style={{ width: "20px" }} /> : <Notification style={{ width: "20px" }} />
-                                    }
-                                </Grid>
-                                <DownArrow style={{ width: "20px" }} />
+                                        {
+                                            selectedNotification === 'All' ? <AllNotify style={{ width: "20px" }} /> : selectedNotification === 'Personalize' ? <Notification style={{ width: "20px" }} /> : selectedNotification === 'None' ? <BlockNotify style={{ width: "20px" }} /> : <Notification style={{ width: "20px" }} />
+                                        }
+                                    </Grid>
+                                    <DownArrow style={{ width: "20px" }} />
+                                </Block>
                             </Block>
                         </Block>
-                    </Block>
-                    :
-                    <Block
-                        className={`relative cursor-pointer px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-full transition-transform duration-500 ease-in-out 
+                        :
+                        <Block
+                            className={`relative cursor-pointer px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-full transition-transform duration-500 ease-in-out 
                             }`}
-                        onClick={handleSubscribe}
-                    >
-                        Follow
-                    </Block>
-                }
-            </Block>
-
-
-            <Grid className={"m-3 mt-2 rounded-xl"}>
-                <Block className={"flex justify-between"}>
-                    <Block className={"flex space-x-2"}>
-                        <Grid className={"text-[20px] font-normal text-white"}>Comments</Grid>
-                        <Grid className={"text-gray-400 text-[14px] font-normal opacity-[80%]"}>{videoOneDataGet && videoOneDataGet?.commentCount}</Grid>
-                    </Block>
-                    <Block>
-                        <Image onClick={() => setShowCommentBox(true)} style={{ cursor: "pointer", width: "17px" }} src={CommentButton} />
-                    </Block>
+                            onClick={handleSubscribe}
+                        >
+                            Follow
+                        </Block>
+                    }
                 </Block>
-                <Block className={"flex gap-x-2"}>
-                    <Grid className="text-[13px] mt-3 opacity-[90%] w-[100%] leading-tight font-light text-white">
 
-                        {videoOneDataGet && videoOneDataGet?.commentData && videoOneDataGet?.commentData.length > 0 ? (
-                            <div>
-                                {videoOneDataGet?.commentData[0] && videoOneDataGet?.commentData[0] ? (
-                                    videoOneDataGet?.commentData?.slice(0, 1)?.map((item: any, index: any) => {
-                                        return (
-                                            <div style={{ display: "flex", alignItems: "center", justifyContent: "spaceBetween", backgroundColor: "#353434", borderRadius: "10px", padding: "13px 12px" }} onClick={() => setShowCommentBox(true)}>
-                                                <div style={{ display: "flex", alignItems: "center", width: "100%" }} key={index}>
-                                                    <img src={item?.userImg ? baseURL + item?.userImg : ""} onError={(e: any) => e.target.src = VideoCreator} style={{ width: "40px", height: "40px", borderRadius: "60px", objectFit: "cover", objectPosition: "top" }} />
-                                                    <div style={{ marginLeft: "10px", width: "100%" }}>
-                                                        <h5 style={{ fontWeight: "bold", fontSize: "13px    " }}>{item?.userName}</h5>
-                                                        <p style={{ marginTop: "10px", fontSize: "12px" }}>{item?.comment}</p>
+
+                <Grid className={"m-3 mt-2 rounded-xl"}>
+                    <Block className={"flex justify-between"}>
+                        <Block className={"flex space-x-2"}>
+                            <Grid className={"text-[20px] font-normal text-white"}>Comments</Grid>
+                            <Grid className={"text-gray-400 text-[14px] font-normal opacity-[80%]"}>{videoOneDataGet && videoOneDataGet?.commentCount}</Grid>
+                        </Block>
+                        <Block>
+                            <Image onClick={() => setShowCommentBox(true)} style={{ cursor: "pointer", width: "17px" }} src={CommentButton} />
+                        </Block>
+                    </Block>
+                    <Block className={"flex gap-x-2"}>
+                        <Grid className="text-[13px] mt-3 opacity-[90%] w-[100%] leading-tight font-light text-white">
+
+                            {videoOneDataGet && videoOneDataGet?.commentData && videoOneDataGet?.commentData.length > 0 ? (
+                                <div>
+                                    {videoOneDataGet?.commentData[0] && videoOneDataGet?.commentData[0] ? (
+                                        videoOneDataGet?.commentData?.slice(0, 1)?.map((item: any, index: any) => {
+                                            return (
+                                                <div style={{ display: "flex", alignItems: "center", justifyContent: "spaceBetween", backgroundColor: "#353434", borderRadius: "10px", padding: "13px 12px" }} onClick={() => setShowCommentBox(true)}>
+                                                    <div style={{ display: "flex", alignItems: "center", width: "100%" }} key={index}>
+                                                        <img src={item?.userImg ? baseURL + item?.userImg : ""} onError={(e: any) => e.target.src = VideoCreator} style={{ width: "40px", height: "40px", borderRadius: "60px", objectFit: "cover", objectPosition: "top" }} />
+                                                        <div style={{ marginLeft: "10px", width: "100%" }}>
+                                                            <h5 style={{ fontWeight: "bold", fontSize: "13px    " }}>{item?.userName}</h5>
+                                                            <p style={{ marginTop: "10px", fontSize: "12px" }}>{item?.comment}</p>
+                                                        </div>
                                                     </div>
+                                                    <span style={{ width: "100%", textAlign: "end" }}>{item?.date
+                                                        ? dayjs(item.date).fromNow() : ""}</span>
                                                 </div>
-                                                <span style={{ width: "100%", textAlign: "end" }}>{item?.date
-                                                    ? dayjs(item.date).fromNow() : ""}</span>
-                                            </div>
-                                        )
-                                    })
-                                ) : (
-                                    "No content available"
-                                )}
-                            </div>
-                        ) : (
-                            <span style={{ marginBottom: "10px" }}>No comments available</span> // Fallback when no comments exist
-                        )}
-                    </Grid>
-                </Block>
+                                            )
+                                        })
+                                    ) : (
+                                        "No content available"
+                                    )}
+                                </div>
+                            ) : (
+                                <span style={{ marginBottom: "10px" }}>No comments available</span> // Fallback when no comments exist
+                            )}
+                        </Grid>
+                    </Block>
 
-            </Grid>
-            <CategoryBar />
-            <Grid className={"mb-20"}>
-                <VideoComponent pb={0} />
-            </Grid>
-            {notify &&
-                <SubscribeNotifyDialog />
-            }
-            {share &&
-                <ShareDialog />
-            }
-            {clip &&
-                <ClipDialog />
-            }
-            {
-                showCommentBox === true && (
-                    <CommentShowDialog />
-                )
-            }
-            {remix &&
-                <RemixDialog />
-            }
-            {report &&
-                <ReportDialog />
-            }
-            {download &&
-                <DownloadDialog setDownload={() => setDownload(false)} />
-            }
-            {save &&
-                <SaveDialog />
-            }
-            {videoSpecfication &&
-                <Video_Specification2 />
-            }
+                </Grid>
+                <CategoryBar />
+                <Grid className={"mb-20"}>
+                    <VideoComponent pb={0} />
+                </Grid>
+                {notify &&
+                    <SubscribeNotifyDialog />
+                }
+                {share &&
+                    <ShareDialog />
+                }
+                {clip &&
+                    <ClipDialog />
+                }
+                {
+                    showCommentBox === true && (
+                        <CommentShowDialog />
+                    )
+                }
+                {remix &&
+                    <RemixDialog />
+                }
+                {report &&
+                    <ReportDialog />
+                }
+                {download &&
+                    <DownloadDialog setDownload={() => setDownload(false)} />
+                }
+                {save &&
+                    <SaveDialog />
+                }
+                {videoSpecfication &&
+                    <Video_Specification2 />
+                }
 
-            {
-                videoAssets &&
-                <Video_Specification setVideoSpecification={() => setVideoAssets(false)} />
-            }
-        </Grid>
+                {
+                    videoAssets &&
+                    <Video_Specification setVideoSpecification={() => setVideoAssets(false)} />
+                }
+            </Grid>
+
+            {isLoading &&
+                <div className='loader'>
+                    <div className='loaderShow'>
+                        <div className="three-body">
+                            <div className="three-body__dot"></div>
+                            <div className="three-body__dot"></div>
+                            <div className="three-body__dot"></div>
+                        </div>
+                    </div>
+                </div>}
+        </>
     );
 };

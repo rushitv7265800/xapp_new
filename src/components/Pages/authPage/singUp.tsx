@@ -9,12 +9,13 @@ import Image from '../../utils/customComponent/Image'
 import Lines from "../../../assets/auth/line.svg";
 import Google from "../../../assets/auth/google.svg";
 import Apple from "../../../assets/auth/apple.svg";
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useMutation } from '@preact-signals/query'
-import { useDispatch } from 'react-redux'
+import { DangerRight } from '../../utils/toastServices'
+import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '../../../redux/store'
-import { createUser } from '../../../redux/slice/authSlice'
+import { createUser, setLoader } from '../../../redux/slice/authSlice'
 
 export default function SignUp() {
     const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -28,6 +29,7 @@ export default function SignUp() {
     const [alertSuccess, setAlertSuccess] = useState(false)
     const [detailsCheckAlert, setDetailsCheckAlert] = useState(false)
     const navigator = useNavigate();
+    const { isLoading } = useSelector((state: any) => state.auth);
     const user = { name: name.trim(), email: email.trim(), password: password.trim(), dob: dob.trim(), username: userName.trim().replace(/\s+/g, '') }
 
     const [errors, setErrors] = useState({
@@ -245,6 +247,10 @@ export default function SignUp() {
     const handleSignUp = () => {
         if (validateFields() == true) {
             // setDetailsCheckAlert(true)
+            const payloadLoader = {
+                isLoading: true
+            }
+            dispatch(setLoader(payloadLoader));
             const payload: any = {
                 email: email,
                 fullName: name,
@@ -253,114 +259,139 @@ export default function SignUp() {
                 password: password
             };
             dispatch(createUser(payload))
-            window.location.href = "/"
         }
         else {
             setAlertError(true)
         }
     }
+
+    useEffect(() => {
+        console.log("isLoading", isLoading)
+        if (isLoading) {
+            setTimeout(() => {
+                const payloadLoader = {
+                    isLoading: false
+                }
+                dispatch(setLoader(payloadLoader));
+                DangerRight("Server Error....")
+            }, 10000);
+        }
+    }, [isLoading])
+
     return (
-        <Grid className="w-full relative h-screen p-4 gap-10 bg-black">
-            <Header>
-                <Grid className="rounded-lg border border-white ml-2 p-[0.4rem]">
-                    <HeroIcon iconName="ChevronLeftIcon" className="h-6 w-6 text-white" solid onClick={() => {
-                        navigator(-1)
-                    }} />
-                </Grid>
-            </Header>
-            <Body className="gap-10">
-                <Grid>
-                    <Text font="medium" className="text-white !text-2xl">Create a <span className="text-theme"> Co.payment </span><br></br> account</Text>
-                </Grid>
+        <>
+            <Grid className="w-full relative h-screen p-4 gap-10 bg-black">
+                <Header>
+                    <Grid className="rounded-lg border border-white ml-2 p-[0.4rem]">
+                        <HeroIcon iconName="ChevronLeftIcon" className="h-6 w-6 text-white" solid onClick={() => {
+                            navigator(-1)
+                        }} />
+                    </Grid>
+                </Header>
+                <Body className="gap-10">
+                    <Grid>
+                        <Text font="medium" className="text-white !text-2xl">Create a <span className="text-theme"> Co.payment </span><br></br> account</Text>
+                    </Grid>
 
-                <Grid className="gap-5">
-                    <Grid>
-                        <InputComponent value={name} onChange={(e: any) => setName(e.currentTarget.value)} placeholder="Full Name" classname='bg-blur text-white rounded-xl' type="text" />
-                        {errors.name && <Grid className="text-red-500 text-[12px]">{errors.name}</Grid>}
-                    </Grid>
-                    <Grid>
-                        <InputComponent value={email} onChange={(e: any) => setEmail(e.currentTarget.value)} placeholder="Email" classname='bg-blur text-white rounded-xl' type="email" />
-                        {errors.email && <span className="text-red-500 text-[12px]">{errors.email}</span>}
-                    </Grid>
-                    <Grid>
-                        <InputComponent value={password} onChange={(e: any) => setpassword(e.currentTarget.value)} placeholder="Password" type={showPassword ? "text" : "password"} classname='bg-blur rounded-xl text-white' right={
-                            <HeroIcon iconName={showPassword ? "EyeIcon" : "EyeSlashIcon"} onClick={() => {
-                                setShowPassword(() => !showPassword)
-                            }} />
-                        } />
-                        {errors.password && <span className="text-red-500 text-[12px]">{errors.password}</span>}
-                    </Grid>
-                    <Grid>
-                        <InputComponent value={dob} onChange={(e: any) => setDob(e.currentTarget.value)} type="date" classname='bg-blur rounded-xl text-white' />
-                        {errors.dob && <span className="text-red-500 text-[12px]">{errors.dob}</span>}
-
-                    </Grid>
-                    <Grid>
+                    <Grid className="gap-5">
                         <Grid>
-                            <InputComponent value={userName} onChange={(e: any) => setUserName(e.currentTarget.value)} placeholder="username (@username)" type="text" classname='bg-blur rounded-xl text-white' />
-                            {errors.username && <span className="text-red-500 text-[12px]">{errors.username}</span>}
+                            <InputComponent value={name} onChange={(e: any) => setName(e.currentTarget.value)} placeholder="Full Name" classname='bg-blur text-white rounded-xl' type="text" />
+                            {errors.name && <Grid className="text-red-500 text-[12px]">{errors.name}</Grid>}
+                        </Grid>
+                        <Grid>
+                            <InputComponent value={email} onChange={(e: any) => setEmail(e.currentTarget.value)} placeholder="Email" classname='bg-blur text-white rounded-xl' type="email" />
+                            {errors.email && <span className="text-red-500 text-[12px]">{errors.email}</span>}
+                        </Grid>
+                        <Grid>
+                            <InputComponent value={password} onChange={(e: any) => setpassword(e.currentTarget.value)} placeholder="Password" type={showPassword ? "text" : "password"} classname='bg-blur rounded-xl text-white' right={
+                                <HeroIcon iconName={showPassword ? "EyeIcon" : "EyeSlashIcon"} onClick={() => {
+                                    setShowPassword(() => !showPassword)
+                                }} />
+                            } />
+                            {errors.password && <span className="text-red-500 text-[12px]">{errors.password}</span>}
+                        </Grid>
+                        <Grid>
+                            <InputComponent value={dob} onChange={(e: any) => setDob(e.currentTarget.value)} type="date" classname='bg-blur rounded-xl text-white' />
+                            {errors.dob && <span className="text-red-500 text-[12px]">{errors.dob}</span>}
+
+                        </Grid>
+                        <Grid>
+                            <Grid>
+                                <InputComponent value={userName} onChange={(e: any) => setUserName(e.currentTarget.value)} placeholder="username (@username)" type="text" classname='bg-blur rounded-xl text-white' />
+                                {errors.username && <span className="text-red-500 text-[12px]">{errors.username}</span>}
+                            </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
-                <Grid>
-                    <Button onClick={handleSignUp}>Send Signup OTP</Button>
-                </Grid>
+                    <Grid>
+                        <Button onClick={handleSignUp}>Send Signup OTP</Button>
+                    </Grid>
 
-                <Grid className="my-2">
+                    <Grid className="my-2">
+                        <Block className="justify-between">
+                            <Image src={Lines} classname='rotate-180' />
+                            <Text font='medium' style={{ fontSize: "1rem" }} className="px-0">OR</Text>
+                            <Image src={Lines} />
+                        </Block>
+                    </Grid>
+                </Body>
+
+                <Footer className="h-[300px] justify-between">
+
                     <Block className="justify-between">
-                        <Image src={Lines} classname='rotate-180' />
-                        <Text font='medium' style={{ fontSize: "1rem" }} className="px-0">OR</Text>
-                        <Image src={Lines} />
+                        <Grid className="bg-blur w-[40%] p-4 items-center rounded-xl cursor-pointer">
+                            <Grid className={"w-6"}>
+                                <Image src={Google} />
+                            </Grid>
+                        </Grid>
+
+                        <Grid className="bg-blur w-[40%] p-4 items-center rounded-xl cursor-pointer">
+                            <Grid className={"w-5"}>
+                                <Image src={Apple} />
+                            </Grid>
+                        </Grid>
                     </Block>
-                </Grid>
-            </Body>
 
-            <Footer className="h-[300px] justify-between">
-
-                <Block className="justify-between">
-                    <Grid className="bg-blur w-[40%] p-4 items-center rounded-xl cursor-pointer">
-                        <Grid className={"w-6"}>
-                            <Image src={Google} />
-                        </Grid>
+                    <Grid className="items-center">
+                        <Text font='small' className="text-white !text-lg font-thin">Already have an account? <Link to="/" className="text-theme font-medium">Sign In</Link></Text>
                     </Grid>
 
-                    <Grid className="bg-blur w-[40%] p-4 items-center rounded-xl cursor-pointer">
-                        <Grid className={"w-5"}>
-                            <Image src={Apple} />
-                        </Grid>
-                    </Grid>
-                </Block>
+                </Footer>
+                {alertError &&
+                    <div className="fixed inset-0 flex items-center justify-center z-20">
+                        {/* Overlay */}
+                        <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setAlertError(false)}></div>
+                        <ErrorDialog />
+                    </div>
+                }
+                {
+                    alertSuccess &&
+                    <div className="fixed inset-0 flex items-center justify-center z-20">
+                        {/* Overlay */}
+                        <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setAlertSuccess(false)}></div>
+                        <SuccessDialog />
+                    </div>
+                }
+                {
+                    detailsCheckAlert &&
+                    <div className="fixed inset-0 flex items-center justify-center z-20">
+                        {/* Overlay */}
+                        <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setDetailsCheckAlert(false)}></div>
+                        <UserDetailsAlert />
+                    </div>
+                }
 
-                <Grid className="items-center">
-                    <Text font='small' className="text-white !text-lg font-thin">Already have an account? <Link to="/" className="text-theme font-medium">Sign In</Link></Text>
-                </Grid>
-
-            </Footer>
-            {alertError &&
-                <div className="fixed inset-0 flex items-center justify-center z-20">
-                    {/* Overlay */}
-                    <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setAlertError(false)}></div>
-                    <ErrorDialog />
-                </div>
-            }
-            {
-                alertSuccess &&
-                <div className="fixed inset-0 flex items-center justify-center z-20">
-                    {/* Overlay */}
-                    <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setAlertSuccess(false)}></div>
-                    <SuccessDialog />
-                </div>
-            }
-            {
-                detailsCheckAlert &&
-                <div className="fixed inset-0 flex items-center justify-center z-20">
-                    {/* Overlay */}
-                    <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setDetailsCheckAlert(false)}></div>
-                    <UserDetailsAlert />
-                </div>
-            }
-
-        </Grid>
+            </Grid>
+            {isLoading &&
+                <div className='loader'>
+                    <div className='loaderShow'>
+                        <div className="three-body">
+                            <div className="three-body__dot"></div>
+                            <div className="three-body__dot"></div>
+                            <div className="three-body__dot"></div>
+                        </div>
+                    </div>
+                </div>}
+        </>
     )
 }
 

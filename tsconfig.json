@@ -23,11 +23,13 @@
     "jsx": "react-jsx",
     "baseUrl": "./src",
     "paths": {
-      "@components/*": ["components/*"]
+      "@components/*": [
+        "components/*"
+      ]
     }
   },
   "include": [
-    "src",
-    "*.mp4"
+    "src/**/*",
+    "src/declarations.d.ts"
   ]
 }

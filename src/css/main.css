@@ -903,10 +903,11 @@
   margin: 4px 0px !important;
 }
 
-.profilePage header{
+.profilePage header {
   z-index: 9999999;
   position: relative;
 }
+
 .profilePage .profilePageBG {
   background-image: url('../assets/AccountIcons/userProfileBg.png');
   background-size: cover;
@@ -914,4 +915,219 @@
   width: 100%;
   position: absolute;
   height: 30%;
+}
+
+
+.loader .loaderShow {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+}
+
+.loader .loaderShow .three-body {
+  --uib-size: 35px;
+  --uib-speed: 0.8s;
+  --uib-color: #8000FF;
+  position: relative;
+  display: inline-block;
+  height: var(--uib-size);
+  width: var(--uib-size);
+  animation: spin78236 calc(var(--uib-speed) * 2.5) infinite linear;
+}
+
+.loader .loaderShow .three-body__dot {
+  position: absolute;
+  height: 100%;
+  width: 30%;
+}
+
+.loader .loaderShow .three-body__dot:after {
+  content: '';
+  position: absolute;
+  height: 0%;
+  width: 100%;
+  padding-bottom: 100%;
+  background-color: var(--uib-color);
+  border-radius: 50%;
+}
+
+.loader .loaderShow .three-body__dot:nth-child(1) {
+  bottom: 5%;
+  left: 0;
+  transform: rotate(60deg);
+  transform-origin: 50% 85%;
+}
+
+.loader .loaderShow .three-body__dot:nth-child(1)::after {
+  bottom: 0;
+  left: 0;
+  animation: wobble1 var(--uib-speed) infinite ease-in-out;
+  animation-delay: calc(var(--uib-speed) * -0.3);
+}
+
+.loader .loaderShow .three-body__dot:nth-child(2) {
+  bottom: 5%;
+  right: 0;
+  transform: rotate(-60deg);
+  transform-origin: 50% 85%;
+}
+
+.loader .loaderShow .three-body__dot:nth-child(2)::after {
+  bottom: 0;
+  left: 0;
+  animation: wobble1 var(--uib-speed) infinite calc(var(--uib-speed) * -0.15) ease-in-out;
+}
+
+.loader .loaderShow .three-body__dot:nth-child(3) {
+  bottom: -5%;
+  left: 0;
+  transform: translateX(116.666%);
+}
+
+.loader .loaderShow .three-body__dot:nth-child(3)::after {
+  top: 0;
+  left: 0;
+  animation: wobble2 var(--uib-speed) infinite ease-in-out;
+}
+
+@keyframes spin78236 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes wobble1 {
+
+  0%,
+  100% {
+    transform: translateY(0%) scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(-66%) scale(0.65);
+    opacity: 0.8;
+  }
+}
+
+@keyframes wobble2 {
+
+  0%,
+  100% {
+    transform: translateY(0%) scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(66%) scale(0.65);
+    opacity: 0.8;
+  }
+}
+
+.spinner::before {
+  border-color: #28a745 #000 0;
+  animation: inherit;
+  animation-duration: 0.5s;
+  animation-direction: reverse;
+}
+
+.spinner::after {
+  margin: 8.9px;
+}
+
+@keyframes spinner-e04l1k {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+.categoryPage {}
+
+.categoryPage .categoryTop {
+  padding: 16px 10px;
+}
+
+.categoryPage .categoryTop .categoryTopDetail {
+  display: flex;
+  align-items: center;
+}
+
+.categoryPage .categoryTop .boxcategoryTopDetail {
+  border: 1px solid #FFFFFF;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  border-radius: 6px;
+  justify-content: center;
+}
+
+.categoryPage .categoryTop .categoryTopDetail span {
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 500;
+  margin-left: 10px;
+  line-height: 18.75px;
+  color: #FFFFFF;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+
+}
+
+.categoryPage .categoryBoxPage {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto auto auto;
+  gap: 10px;
+  padding: 20px;
+  background-color: black;
+}
+
+.categoryPage .categoryBoxPage .categoryBoxShowName {
+  background-color: #8000FF5E;
+  color: #FFFFFF;
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 18.75px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  padding: 8px 4px;
+  text-align: center;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.categoryPage .categoryBoxPage .categoryBoxShowName :hover {
+  transform: scale(1.05);
+  /* Slight zoom effect on hover */
+}
+
+.drawerBottomNavigation {
+  position: absolute;
+  width: 90%;
+  bottom: 4%;
+}
+.userProfileDetail{
+  margin-top: 6% !important;
+}
+.drawerBottomNavigation ul {
+  list-style-type: disc;
+  display: flex;
+  justify-content: space-evenly;
+}
+.drawerBottomNavigation ul{
+  margin-top: 6px;
+}
+.drawerBottomNavigation ul li {
+  color: #e5e7eb;
+  opacity: 0.5;
+  cursor: pointer;
+  font-size: 15px;
 }

@@ -17,7 +17,6 @@ interface VideoState {
     videosDataAll: Video[];
     followData: {},
     videoOneData: any
-    isSkeleton: boolean;
     isLoading: boolean;
 }
 
@@ -25,7 +24,6 @@ const initialState: VideoState = {
     videosDataAll: [],
     videoOneData: {},
     followData: {},
-    isSkeleton: false,
     isLoading: false,
 };
 
@@ -103,29 +101,29 @@ const videoSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(getAllVideos.pending, (state) => {
-                state.isSkeleton = true;
+                state.isLoading = true;
             })
             .addCase(getAllVideos.fulfilled, (state, action) => {
                 console.log(action.payload);  // Check the response structure
                 state.videosDataAll = action.payload.data || [];
-                state.isSkeleton = false;
+                state.isLoading = false;
             })
             .addCase(getAllVideos.rejected, (state) => {
-                state.isSkeleton = false;
+                state.isLoading = false;
             })
             .addCase(getVideoIdToVideo.pending, (state) => {
-                state.isSkeleton = true;
+                state.isLoading = true;
             })
             .addCase(getVideoIdToVideo.fulfilled, (state, action) => {
                 console.log("action.payload", action.payload?.data);
                 state.videoOneData = action.payload.data || [];
-                state.isSkeleton = false;
+                state.isLoading = false;
             })
             .addCase(getVideoIdToVideo.rejected, (state) => {
-                state.isSkeleton = false;
+                state.isLoading = false;
             })
             .addCase(likeVideo.pending, (state) => {
-                state.isSkeleton = true;
+                state.isLoading = true;
             })
             .addCase(likeVideo.fulfilled, (state, action: any) => {
                 console.log(action.payload);
@@ -137,22 +135,22 @@ const videoSlice = createSlice({
                 } else {
                     DangerRight("Deslike successfully")
                 }
-                state.isSkeleton = false;
+                state.isLoading = false;
             })
             .addCase(likeVideo.rejected, (state) => {
-                state.isSkeleton = false;
+                state.isLoading = false;
             })
             .addCase(createCommentVideo.pending, (state) => {
-                state.isSkeleton = true;
+                state.isLoading = true;
             })
             .addCase(createCommentVideo.fulfilled, (state, action: any) => {
                 console.log(action.payload);
                 state.videoOneData = action.payload?.video || {};
                 Success(action.payload?.message)
-                state.isSkeleton = false;
+                state.isLoading = false;
             })
             .addCase(createCommentVideo.rejected, (state) => {
-                state.isSkeleton = false;
+                state.isLoading = false;
             })
             .addCase(createVideo.pending, (state) => {
                 state.isLoading = true;
@@ -160,8 +158,8 @@ const videoSlice = createSlice({
             .addCase(createVideo.fulfilled, (state: any, action) => {
                 if (action.payload.status) {
                     state.videosDataAll.unshift(action.payload.data);
-                    Success('Video Add Successfully');
                 }
+                Success('Video Add Successfully');
                 state.isLoading = false;
             })
             .addCase(createVideo.rejected, (state) => {

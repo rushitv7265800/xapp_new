@@ -27,8 +27,11 @@ export default function Header() {
         <Block className={"gap-1 ml-1"}>
           <Image src={YoutubeLogo} style={{ width: "120px", height: "60px" }} />
         </Block>
-
-        {!searchbar ? (
+        <Block className={"relative w-[70%] justify-end"}>
+          <div className="mr-3" onClick={handleSearch}><SearchIcon /></div>
+          <Drawer />
+        </Block>
+        {/* {!searchbar ? (
           <Block className={"space-x-6"}>
             <div onClick={() => setCast(true)}><ConnectDevice /></div>
             <Link to={"/notification"}>
@@ -62,9 +65,8 @@ export default function Header() {
               </svg>
             </button>
           </Block>
-        )}
+        )} */}
         {/* {cast && <ConnectDevicesDialog setCast={() => setCast(false)} />} */}
-        <Drawer />
       </Block>
     </Grid>
 

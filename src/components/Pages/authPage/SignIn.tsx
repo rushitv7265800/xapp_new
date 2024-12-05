@@ -6,14 +6,15 @@ import InputComponent from '../../utils/customComponent/Input'
 import Button from '../../utils/customComponent/Button'
 import Block from '../../utils/customComponent/Block'
 import Image from '../../utils/customComponent/Image'
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Lines from "../../../assets/auth/line.svg";
 import Google from "../../../assets/auth/google.svg";
 import Apple from "../../../assets/auth/apple.svg";
 import { Link } from 'react-router-dom'
-import { loginUser } from '../../../redux/slice/authSlice'
-import { AppDispatch } from '../../../redux/store'
-import { useState } from 'react'
+import { loginUser, setLoader } from '../../../redux/slice/authSlice'
+import { AppDispatch, RootState } from '../../../redux/store'
+import { useEffect, useState } from 'react'
+import { DangerRight } from '../../utils/toastServices'
 
 
 interface LoginPayload {
@@ -25,10 +26,10 @@ export default function SignIn() {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const dispatch = useDispatch<AppDispatch>();
     const [email, setEmail] = useState("")
-    const [isLoading, setIsLoading] = useState(false)
     const [password, setPassword] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
     const [alertError, setAlertError] = useState(false)
+    const { isLoading } = useSelector((state: any) => state.auth);
 
 
     const [alertSuccess, setAlertSuccess] = useState(false)
@@ -89,7 +90,7 @@ export default function SignIn() {
                     Enjoy your dreams...
                 </div>
                 <div className="flex">
-                    <button onClick={() => { window.location.replace("/")}} type="button" className="text-green-400 bg-transparent border border-green-800 hover:bg-green-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:hover:bg-green-600 dark:border-green-600 dark:text-green-500 dark:hover:text-white dark:focus:ring-green-800" data-dismiss-target="#alert-additional-content-2" aria-label="Close">
+                    <button onClick={() => { window.location.replace("/") }} type="button" className="text-green-400 bg-transparent border border-green-800 hover:bg-green-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:hover:bg-green-600 dark:border-green-600 dark:text-green-500 dark:hover:text-white dark:focus:ring-green-800" data-dismiss-target="#alert-additional-content-2" aria-label="Close">
                         Ok
                     </button>
                 </div>
@@ -151,93 +152,117 @@ export default function SignIn() {
     // };
 
 
-    const handleSubmitLogin = (): void => {
+    const handleSubmitLogin = () => {
+        console.log("isLoading", isLoading)
+        const payloadLoader = {
+            isLoading: true
+        }
+        dispatch(setLoader(payloadLoader)); // Dispatch the action
         const payload: LoginPayload = {
             email: email,
             password: password
         };
-
         dispatch(loginUser(payload));
-        // setAlertSuccess(true);
-        // setIsLoading(false)
-        // if (email === "aaaaa") {
-        //     VerifyOtp()
-        // }
+        setAlertSuccess(true);
     }
 
+    useEffect(() => {
+        console.log("isLoading", isLoading)
+        if (isLoading) {
+            setTimeout(() => {
+                const payloadLoader = {
+                    isLoading: false
+                }
+                dispatch(setLoader(payloadLoader));
+                DangerRight("Server Error....")
+            }, 10000);
+        }
+    }, [isLoading])
+
+
     return (
-        <Grid className="w-full h-screen p-4 gap-7 bg-black">
-            <Header>
-                <Grid className="rounded-lg ml-2 border border-white p-[0.4rem]">
-                    <HeroIcon iconName="ChevronLeftIcon" className="h-6 w-6 text-white" solid />
-                </Grid>
-            </Header>
-            <Body className="gap-10">
-                <Grid className={"flex justify-center space-y-2"}>
-                    <Text font="medium" className="text-white !text-xl">Hi There! 👋</Text>
-                    <Text font='small' className="text-white !text-lg font-thin">Welcome back, Sign in to your account</Text>
-                </Grid>
-                <Grid className="gap-5">
-                    <Grid>
-                        <InputComponent onChange={(e) => setEmail(e.currentTarget.value)} placeholder="email or username" classname='bg-blur rounded-xl text-white' type="text" />
-                        {errors.email && <span className="text-red-500 text-[12px]">{errors.email}</span>}
+        <>
+            <Grid className="w-full h-screen p-4 gap-7 bg-black">
+                <Header>
+                    <Grid className="rounded-lg ml-2 border border-white p-[0.4rem]">
+                        <HeroIcon iconName="ChevronLeftIcon" className="h-6 w-6 text-white" solid />
                     </Grid>
-                    <Grid>
-                        <InputComponent onChange={(e) => setPassword(e.currentTarget.value)} placeholder="Password" type={showPassword ? "text" : "password"} classname='bg-blur rounded-xl text-white' right={
-                            <HeroIcon iconName={showPassword ? "EyeIcon" : "EyeSlashIcon"} onClick={() => {
-                                setShowPassword(() => !showPassword)
-                            }} />
-                        } />
-                        {errors.password && <span className="text-red-500 text-[12px]">{errors.password}</span>}
+                </Header>
+                <Body className="gap-10">
+                    <Grid className={"flex justify-center space-y-2"}>
+                        <Text font="medium" className="text-white !text-xl">Hi There! 👋</Text>
+                        <Text font='small' className="text-white !text-lg font-thin">Welcome back, Sign in to your account</Text>
                     </Grid>
-                </Grid>
+                    <Grid className="gap-5">
+                        <Grid>
+                            <InputComponent onChange={(e) => setEmail(e.currentTarget.value)} placeholder="email or username" classname='bg-blur rounded-xl text-white' type="text" />
+                            {errors.email && <span className="text-red-500 text-[12px]">{errors.email}</span>}
+                        </Grid>
+                        <Grid>
+                            <InputComponent onChange={(e) => setPassword(e.currentTarget.value)} placeholder="Password" type={showPassword ? "text" : "password"} classname='bg-blur rounded-xl text-white' right={
+                                <HeroIcon iconName={showPassword ? "EyeIcon" : "EyeSlashIcon"} onClick={() => {
+                                    setShowPassword(() => !showPassword)
+                                }} />
+                            } />
+                            {errors.password && <span className="text-red-500 text-[12px]">{errors.password}</span>}
+                        </Grid>
+                    </Grid>
 
-                <Grid className="gap-10">
-                    <Text font="small" className="text-white !text-lg">Forgot Password?</Text>
-                    <Button onClick={handleSubmitLogin}>Sign In</Button>
-                </Grid>
+                    <Grid className="gap-10">
+                        <Text font="small" className="text-white !text-lg">Forgot Password?</Text>
+                        <Button onClick={() => handleSubmitLogin()}>Sign In</Button>
+                    </Grid>
 
-                <Grid className="my-2">
+                    <Grid className="my-2">
+                        <Block className="justify-between">
+                            <Image src={Lines} classname='rotate-180' />
+                            <Text font='medium' style={{ fontSize: "1rem" }} className="px-0">OR</Text>
+                            <Image src={Lines} />
+                        </Block>
+                    </Grid>
+                </Body>
+
+                <Footer className="h-[300px] justify-between">
+
                     <Block className="justify-between">
-                        <Image src={Lines} classname='rotate-180' />
-                        <Text font='medium' style={{ fontSize: "1rem" }} className="px-0">OR</Text>
-                        <Image src={Lines} />
+                        <Grid className="bg-blur w-[40%] p-4 items-center rounded-xl cursor-pointer">
+                            <Grid className={"w-6"}>
+                                <Image src={Google} />
+                            </Grid>
+                        </Grid>
+
+                        <Grid className="bg-blur w-[40%] p-4 items-center rounded-xl cursor-pointer">
+                            <Grid className={"w-5"}>
+                                <Image src={Apple} />
+                            </Grid>
+                        </Grid>
                     </Block>
-                </Grid>
-            </Body>
 
-            <Footer className="h-[300px] justify-between">
-
-                <Block className="justify-between">
-                    <Grid className="bg-blur w-[40%] p-4 items-center rounded-xl cursor-pointer">
-                        <Grid className={"w-6"}>
-                            <Image src={Google} />
-                        </Grid>
+                    <Grid className="items-center">
+                        <Text font='small' className="text-white !text-lg font-thin">Don’t have an account? <Link to="/signup" className="text-theme font-medium">Sign Up</Link></Text>
                     </Grid>
-
-                    <Grid className="bg-blur w-[40%] p-4 items-center rounded-xl cursor-pointer">
-                        <Grid className={"w-5"}>
-                            <Image src={Apple} />
-                        </Grid>
-                    </Grid>
-                </Block>
-
-                <Grid className="items-center">
-                    <Text font='small' className="text-white !text-lg font-thin">Don’t have an account? <Link to="/signup" className="text-theme font-medium">Sign Up</Link></Text>
-                </Grid>
-            </Footer>
-            {alertSuccess && <div className="fixed inset-0 flex items-center justify-center z-20">
-                {/* Overlay */}
-                <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setAlertSuccess(false)}></div>
-                <SuccessDialog />
-            </div>}
-            {alertError && <div className="fixed inset-0 flex items-center justify-center z-20">
-                {/* Overlay */}
-                <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setAlertError(false)}></div>
-                <ErrorDialog />
-            </div>}
-            {isLoading && <Loader />}
-        </Grid>
+                </Footer>
+                {/* {alertSuccess && <div className="fixed inset-0 flex items-center justify-center z-20">
+                    <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setAlertSuccess(false)}></div>
+                    <SuccessDialog />
+                </div>} */}
+                {alertError && <div className="fixed inset-0 flex items-center justify-center z-20">
+                    {/* Overlay */}
+                    <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setAlertError(false)}></div>
+                    <ErrorDialog />
+                </div>}
+            </Grid>
+            {isLoading &&
+                <div className='loader'>
+                    <div className='loaderShow'>
+                        <div className="three-body">
+                            <div className="three-body__dot"></div>
+                            <div className="three-body__dot"></div>
+                            <div className="three-body__dot"></div>
+                        </div>
+                    </div>
+                </div>}
+        </>
     )
 }
 

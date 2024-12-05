@@ -17,7 +17,6 @@ interface ShortState {
     commentsShort: Short[];
     subscriptionAllShorts: [];
     commentCount: number
-    isSkeleton: boolean;
     isLoading: boolean;
 }
 
@@ -26,7 +25,6 @@ const initialState: ShortState = {
     commentCount: 0,
     commentsShort: [],
     subscriptionAllShorts: [],
-    isSkeleton: false,
     isLoading: false,
 };
 
@@ -112,32 +110,32 @@ const shortSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(getAllShort.pending, (state) => {
-                state.isSkeleton = true;
+                state.isLoading = true;
             })
             .addCase(getAllShort.fulfilled, (state: any, action) => {
                 console.log(action.payload);  // Check the response structure
                 state.shorts = action.payload.data || [];
-                state.isSkeleton = false;
+                state.isLoading = false;
             })
             .addCase(getAllShort.rejected, (state) => {
-                state.isSkeleton = false;
+                state.isLoading = false;
             })
 
             .addCase(getSubscriptionAllShortsByIds.pending, (state) => {
-                state.isSkeleton = true;
+                state.isLoading = true;
             })
             .addCase(getSubscriptionAllShortsByIds.fulfilled, (state: any, action) => {
                 console.log(action.payload);  // Check the response structure
                 state.subscriptionAllShorts = action.payload.data || [];
-                state.isSkeleton = false;
+                state.isLoading = false;
             })
             .addCase(getSubscriptionAllShortsByIds.rejected, (state) => {
-                state.isSkeleton = false;
+                state.isLoading = false;
             })
 
 
             .addCase(createCommentShort.pending, (state) => {
-                state.isSkeleton = true;
+                state.isLoading = true;
             })
             .addCase(createCommentShort.fulfilled, (state: any, action: any) => {
                 console.log(action.payload);  // Check the response structure
@@ -154,24 +152,24 @@ const shortSlice = createSlice({
                 }
             
                 state.commentCount = action.payload.commentCount || 0;
-                state.isSkeleton = false;
+                state.isLoading = false;
                 Success("Comment Added Successfully");
             })
             .addCase(createCommentShort.rejected, (state) => {
-                state.isSkeleton = false;
+                state.isLoading = false;
             })
 
             .addCase(getCommentForShort.pending, (state) => {
-                state.isSkeleton = true;
+                state.isLoading = true;
             })
             .addCase(getCommentForShort.fulfilled, (state, action: any) => {
                 console.log(action.payload);  // Check the response structure
                 state.commentsShort = action.payload.comments || [];
                 state.commentCount = action.payload.commentCount || 0;
-                state.isSkeleton = false;
+                state.isLoading = false;
             })
             .addCase(getCommentForShort.rejected, (state) => {
-                state.isSkeleton = false;
+                state.isLoading = false;
             })
 
             .addCase(createShort.pending, (state) => {
@@ -180,15 +178,15 @@ const shortSlice = createSlice({
             .addCase(createShort.fulfilled, (state, action) => {
                 if (action.payload.data.status) {
                     state.shorts.unshift(action.payload.data.data);
-                    Success('Short Add Successfully');
                 }
+                Success('Short Add Successfully');
                 state.isLoading = false;
             })
             .addCase(createShort.rejected, (state) => {
                 state.isLoading = false;
             })
             .addCase(likeShort.pending, (state) => {
-                state.isSkeleton = true;
+                state.isLoading = true;
             })
             .addCase(likeShort.fulfilled, (state, action: any) => {
                 const updatedShort = action.payload.shortData; // The updated short data from the API
@@ -212,10 +210,10 @@ const shortSlice = createSlice({
                 } else {
                     DangerRight("DisLike Successfully")
                 }
-                state.isSkeleton = false;
+                state.isLoading = false;
             })
             .addCase(likeShort.rejected, (state) => {
-                state.isSkeleton = false;
+                state.isLoading = false;
             })
             .addCase(updateShort.pending, (state) => {
                 state.isLoading = true;

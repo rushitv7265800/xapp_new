@@ -65,7 +65,7 @@ const VideoCom: React.FC<VideoComProps> = (props: any) => {
                 <VideoIcon className="mx-2" width="30px" height="30px" />
                 <Grid className="text-[22px] font-extrabold">Videos</Grid>
             </Block>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-x-4 md:gap-y-6 sm:gap-y-4  gap-y-0 pb-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-4 md:gap-y-6 sm:gap-y-4  gap-y-0 pb-0">
                 {videosData?.map((video, index) => (
                     <Grid
                         key={index}
@@ -80,8 +80,8 @@ const VideoCom: React.FC<VideoComProps> = (props: any) => {
                             <Block className="relative">
                                 <img
                                     // className="w-full h-full h-[215px] sm:h-[180px] md:h-[200px] lg:h-[215px] object-contain rounded-lg"
-                                    className="w-full h-full  object-contain rounded-lg"
-
+                                    className="w-full h-full  object-cover rounded-lg videoShowContent"
+                                    style={{height:"257px"}}
                                     src={
                                         video
                                             ? baseURL + video?.videoThumbnail

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { apiInstance, apiInstanceFetch } from '../../components/utils/api/axiosApi';
 import { DangerRight, Success } from '../../components/utils/toastServices';
@@ -110,6 +110,9 @@ const authSlice = createSlice({
       // const token_ = jwtDecode<JwtPayload & any>(action.payload.token);  // Cast the decoded token
       state.isAuth = true;
       // setToken(action.payload.token);
+    },
+    setLoader(state, action: PayloadAction<{ isLoading: boolean }>) {
+      state.isLoading = action.payload.isLoading;
     },
     logout(state) {
       localStorage.removeItem("token");
@@ -297,4 +300,4 @@ const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
-export const { setOldAdmin, logout } = authSlice.actions;
+export const { setOldAdmin, logout, setLoader } = authSlice.actions;

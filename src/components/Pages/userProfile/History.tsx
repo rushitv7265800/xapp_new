@@ -1,8 +1,8 @@
 import React from 'react'
-import { Bell, ChevronLeft, Home, Library, MessageCircle, MoreVertical, Search, User, Video } from 'lucide-react'
-import Image from "next/image"
-import Link from "next/link"
+// import { Bell, ChevronLeft, Home, Library, MessageCircle, MoreVertical, Search, User, Video } from 'lucide-react'
 import { Input } from '@headlessui/react';
+import { Link } from 'react-router-dom';
+import Image from '@components/utils/customComponent/Image';
 
 export default function History() {
     const mockHistory = [
@@ -51,9 +51,9 @@ export default function History() {
       ];
   return (
     <div className="min-h-screen bg-black text-white">
-      <header className="sticky top-0 z-50 flex items-center justify-between gap-4 bg-black p-4">
+      {/* <header className="sticky top-0 z-50 flex items-center justify-between gap-4 bg-black p-4">
         <div className="flex items-center gap-4">
-          <Link href="#" className="text-white">
+          <Link to="#" className="text-white">
             <ChevronLeft className="h-6 w-6" />
           </Link>
           <h1 className="text-xl font-semibold">History</h1>
@@ -72,17 +72,15 @@ export default function History() {
             <Image
               src="/placeholder.svg?height=32&width=32"
               alt="Profile"
-              width={32}
-              height={32}
               className="h-full w-full object-cover"
             />
           </button>
         </div>
-      </header>
+      </header> */}
 
       <div className="px-4 py-2">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
+          {/* <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" /> */}
           <Input
             className="w-full rounded-full bg-zinc-900 pl-10 text-white placeholder-gray-400"
             placeholder="Search watch history"
@@ -104,12 +102,10 @@ export default function History() {
                     <Image
                       src={video.thumbnail}
                       alt={video.title}
-                      width={160}
-                      height={284}
                       className="rounded-xl object-cover aspect-[9/16]"
                     />
                     <button className="absolute top-2 right-2 p-1">
-                      <MoreVertical className="h-5 w-5" />
+                      {/* <MoreVertical className="h-5 w-5" /> */}
                     </button>
                     <div className="absolute bottom-2 left-2 right-2">
                       <h3 className="text-sm font-medium line-clamp-2">{video.title}</h3>
@@ -126,8 +122,6 @@ export default function History() {
                       <Image
                         src={video.thumbnail}
                         alt={video.title}
-                        width={160}
-                        height={90}
                         className="rounded-xl object-cover aspect-video"
                       />
                       <div className="absolute bottom-1 right-1 rounded bg-black/80 px-1 text-xs">
@@ -140,7 +134,7 @@ export default function History() {
                       <p className="text-sm text-gray-400">{video.views}</p>
                     </div>
                     <button className="p-1">
-                      <MoreVertical className="h-5 w-5" />
+                      {/* <MoreVertical className="h-5 w-5" /> */}
                     </button>
                   </div>
                 ))}
@@ -152,20 +146,20 @@ export default function History() {
 
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 flex items-center justify-around border-t border-zinc-800 bg-black py-2">
-        <Link href="#" className="flex flex-col items-center p-2 text-white">
-          <Home className="h-6 w-6" />
+        <Link to="#" className="flex flex-col items-center p-2 text-white">
+          {/* <Home className="h-6 w-6" /> */}
           <span className="mt-1 text-xs">Home</span>
         </Link>
-        <Link href="#" className="flex flex-col items-center p-2 text-white">
-          <Video className="h-6 w-6" />
+        <Link to="#" className="flex flex-col items-center p-2 text-white">
+          {/* <Video className="h-6 w-6" /> */}
           <span className="mt-1 text-xs">Shorts</span>
         </Link>
-        <Link href="#" className="flex flex-col items-center p-2 text-white">
-          <Library className="h-6 w-6" />
+        <Link to="#" className="flex flex-col items-center p-2 text-white">
+          {/* <Library className="h-6 w-6" /> */}
           <span className="mt-1 text-xs">Library</span>
         </Link>
-        <Link href="#" className="flex flex-col items-center p-2 text-white">
-          <User className="h-6 w-6" />
+        <Link to="#" className="flex flex-col items-center p-2 text-white">
+          {/* <User className="h-6 w-6" /> */}
           <span className="mt-1 text-xs">You</span>
         </Link>
       </nav>

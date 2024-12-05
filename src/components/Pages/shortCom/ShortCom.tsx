@@ -51,7 +51,7 @@ import dayjs from "dayjs";
 import { Success } from "../../utils/toastServices";
 import { getUserFollow } from "../../../redux/slice/authSlice";
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // Add the plugin to dayjs
 dayjs.extend(relativeTime);
@@ -65,11 +65,12 @@ const ShortCom = () => {
     const [limit, setLimit] = useState(20)
     const [showCommentBox, setShowCommentBox] = useState<boolean>(false);
     const [getShort, setGetShort] = useState<any>()
-    const { shorts } = useSelector((state: any) => state.short);
+    const { shorts, isLoading } = useSelector((state: any) => state.short);
     const [shortsData, setShortsData] = useState<any[] | undefined>(undefined);
-    const storedData = localStorage.getItem("selectShort");
+    const storedData = sessionStorage.getItem("selectShort");
     const [mutedGet, setMutedGet] = useState<boolean>(true)
     const navigate = useNavigate()
+    const location = useLocation()
 
     // Check if storedData is valid and not an empty string before parsing
     const handleMuteToggle = () => {
@@ -99,16 +100,28 @@ const ShortCom = () => {
         dispatch(getAllShort(payload))
     }, [start, limit])
 
+    const moveToTop = (data, targetId) => {
+        const targetItem = data.find(item => item._id === targetId);
+        if (!targetItem) return data;
+        return [targetItem, ...data.filter(item => item._id !== targetId)];
+    };
+
+
     useEffect(() => {
-        if (!shorts) return;
-        console.log("shorts", shorts[0])
-        // const selectedShort = shorts.find(item => item?._id === getSelectShort?._id);
-        // const removeShort = shorts.filter(item => item?._id !== getSelectShort?._id); // Find the item that matches the selected ID
-        // Find the item that matches the selected ID
-        setShortsData(shorts);
-        // setShortsData(selectedShort ? [selectedShort] : []); // Set state with the selected item, or an empty array if not found
-        // setShortsData(selectedShort ? [selectedShort] : [])
-    }, [shorts]);
+        if (location.state?.key === "homePage") {
+            if (!shorts || !getSelectShort?._id) return;
+
+            const updatedShorts = moveToTop(shorts, getSelectShort._id);
+
+            // Update only if the data changes
+            if (JSON.stringify(shortsData) !== JSON.stringify(updatedShorts)) {
+                setShortsData(updatedShorts);
+            }
+        } else {
+            setShortsData(shorts);
+        }
+    }, [shorts, location, getSelectShort, shortsData]);
+
 
 
     const fetchData = () => {
@@ -232,7 +245,7 @@ const ShortCom = () => {
             userId: video?.userId,
             targetUserId: userData_?._id,
             shortId: video?._id,
-            filterUnfollowData:filterUnfollowData
+            filterUnfollowData: filterUnfollowData
         }
         dispatch(toggleFollowShort(payload))
         if (follow) {
@@ -915,6 +928,17 @@ const ShortCom = () => {
                     </div>
                 )
             }
+
+            {isLoading &&
+                <div className='loader'>
+                    <div className='loaderShow'>
+                        <div className="three-body">
+                            <div className="three-body__dot"></div>
+                            <div className="three-body__dot"></div>
+                            <div className="three-body__dot"></div>
+                        </div>
+                    </div>
+                </div>}
         </div>
 
     )
