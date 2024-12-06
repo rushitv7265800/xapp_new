@@ -102,6 +102,7 @@ const Drawer: React.FC = () => {
           <button
             className="flex items-center space-x-2"
             style={{ marginTop: "20px" }}
+            onClick={() => navigate("/user/history")}
           >
             <img src={HeadphonesIcon} />
             <span>History</span>
@@ -154,14 +155,6 @@ const Drawer: React.FC = () => {
             <FaUserFriends />
             <span>My Subscriptions</span>
           </button>
-          <NavLink
-            to="/user/history"
-            className="flex items-center space-x-2"
-            style={{ marginTop: "20px" }}
-          >
-            <FaHistory />
-            <span>History</span>
-          </NavLink>
           <button
             className="flex items-center space-x-2"
             style={{ marginTop: "20px" }}

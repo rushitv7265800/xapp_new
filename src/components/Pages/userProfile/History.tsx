@@ -5,7 +5,9 @@ import {
   MoreVertical,
   Search,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 export default function History() {
+  const navigate = useNavigate()
   const mockHistory = [
     {
       title: "Short Videos",
@@ -66,7 +68,7 @@ export default function History() {
           views: "980K views",
           isShort: true,
         },
-     
+
       ],
     },
     {
@@ -103,7 +105,7 @@ export default function History() {
           duration: "08:30",
           channelName: "DevSimplified",
           isShort: false,
-        },        {
+        }, {
           id: 1,
           title: "Understanding React Hooks",
           views: "10K views",
@@ -118,7 +120,7 @@ export default function History() {
           duration: "08:30",
           channelName: "DevSimplified",
           isShort: false,
-        },        {
+        }, {
           id: 1,
           title: "Understanding React Hooks",
           views: "10K views",
@@ -137,12 +139,12 @@ export default function History() {
       ],
     },
   ];
-  
+
   return (
     <div className="min-h-screen bg-black text-white">
       <header className="sticky top-0 z-50 flex items-center justify-between gap-4 bg-black p-4">
         <div className="flex items-center gap-4">
-          <a href="#" className="text-white">
+          <a className="text-white" onClick={() => navigate("/user/home")}>
             <ChevronLeft className="h-6 w-6" />
           </a>
           <h1 className="text-xl font-semibold">History</h1>
@@ -195,7 +197,7 @@ export default function History() {
                     </button>
                     <div className="absolute bottom-2 left-2 right-2">
                       <h3 className="text-sm font-medium line-clamp-2">
-                        {video.title} 
+                        {video.title}
                       </h3>
                       <p className="text-xs text-gray-400">{video.views}</p>
                     </div>
