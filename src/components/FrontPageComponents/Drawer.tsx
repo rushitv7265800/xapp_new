@@ -11,10 +11,12 @@ import {
   FaUpload,
   FaPhotoVideo,
   FaUserFriends,
+
   FaHistory,
 } from "react-icons/fa";
 import Image from "../../components/utils/customComponent/Image";
 import CategoryIcon from "../../assets/drawer/CategoryIcon.png";
+import LogOutIcon from "../../assets/FrontpageIcons/logOutIcon.png";
 import HashIcon from "../../assets/drawer/hash.png";
 import YoutubeLogo from "../../assets/FrontpageIcons/headerLogo.png";
 import HeadphonesIcon from "../../assets/drawer/headphones.png";
@@ -30,6 +32,12 @@ const Drawer: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
+  const hadnleLogOut = () => {
+    localStorage.clear()
+    navigate("/signIn")
+  }
+
+
   return (
     <div className="relative">
       {/* Hamburger Icon */}
@@ -42,9 +50,8 @@ const Drawer: React.FC = () => {
 
       {/* Drawer */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-black text-white transform ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300`}
+        className={`fixed top-0 left-0 h-full w-64 bg-black text-white transform ${isOpen ? "translate-x-0" : "-translate-x-full"
+          } transition-transform duration-300`}
         style={{ zIndex: "9999" }}
       >
         {/* Header with Logo and Close Button */}
@@ -155,6 +162,14 @@ const Drawer: React.FC = () => {
             <FaHistory />
             <span>History</span>
           </NavLink>
+          <button
+            className="flex items-center space-x-2"
+            style={{ marginTop: "20px" }}
+            onClick={() => hadnleLogOut()}
+          >
+            <img src={LogOutIcon} style={{ width: "16px", height: "16px" }} />
+            <span>Log Out</span>
+          </button>
           {/* Login/Signup Button */}
           {/* <button className="w-full py-2 text-center bg-purple-600 rounded-md hover:bg-purple-700">
             Log in / Sign up
